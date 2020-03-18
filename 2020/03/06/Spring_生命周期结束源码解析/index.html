@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Spring 生命周期结束源码解析 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2020/03/06/Spring_生命周期结束源码解析/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#源码" title="源码">源码</a>
+                        
+                          <a class="tag" href="/tags/#Spring" title="Spring">Spring</a>
+                        
+                    </div>
+                    <h1>Spring 生命周期结束源码解析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2020-03-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在浏览论坛时,看见有人提问，Spring 应用怎样退出。</p>
+<p>在 StackOverFlow 上查询如何退出.得到的结论是:</p>
+<pre><code>1. 编程式退出
+2. 使用 spring-boot-actuators
+</code></pre><p>之前一直是使用 kill -9 命令退出应该是不正确的做法。</p>
+<a id="more"></a>
+<h2 id="一-Spring-生命周期结束源码解析"><a href="#一-Spring-生命周期结束源码解析" class="headerlink" title="一. Spring 生命周期结束源码解析"></a>一. Spring 生命周期结束源码解析</h2><h3 id="1-SpringApplication-exit-context-exitCodeGenerators"><a href="#1-SpringApplication-exit-context-exitCodeGenerators" class="headerlink" title="1. SpringApplication.exit(context,exitCodeGenerators)"></a>1. SpringApplication.exit(context,exitCodeGenerators)</h3><p>用于退出 SpringApplication 的静态方法,并返回成功(0)和其他code.</p>
+<p><strong>参数:</strong></p>
+<ul>
+<li>ApplicationContext 需要被关闭的上下文</li>
+<li>ExitCodeGenerator 用于从正在运行的命令行生成“exit code”的接口</li>
+</ul>
+<p><strong>方法体:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">exit</span><span class="params">(ApplicationContext context, ExitCodeGenerator... exitCodeGenerators)</span> </span>&#123;</span><br><span class="line">	Assert.notNull(context, <span class="string">"Context must not be null"</span>);</span><br><span class="line">	<span class="keyword">int</span> exitCode = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//首先执行所有ExitCodeGenerator的getExitCode()方法</span></span><br><span class="line">			ExitCodeGenerators generators = <span class="keyword">new</span> ExitCodeGenerators();</span><br><span class="line">			Collection&lt;ExitCodeGenerator&gt; beans = context.getBeansOfType(ExitCodeGenerator<span class="class">.<span class="keyword">class</span>).<span class="title">values</span>()</span>;</span><br><span class="line">			generators.addAll(exitCodeGenerators);</span><br><span class="line">			generators.addAll(beans);</span><br><span class="line">			exitCode = generators.getExitCode();</span><br><span class="line">            <span class="comment">//发布ExitCodeEvent事件</span></span><br><span class="line">			<span class="keyword">if</span> (exitCode != <span class="number">0</span>) &#123;</span><br><span class="line">				context.publishEvent(<span class="keyword">new</span> ExitCodeEvent(context, exitCode));</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">//核心方法</span></span><br><span class="line">			close(context);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">		ex.printStackTrace();</span><br><span class="line">		exitCode = (exitCode != <span class="number">0</span>) ? exitCode : <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> exitCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-ConfigurableApplicationContext接口的close-方法"><a href="#2-ConfigurableApplicationContext接口的close-方法" class="headerlink" title="2. ConfigurableApplicationContext接口的close()方法"></a>2. ConfigurableApplicationContext接口的close()方法</h3><p>此方法为Spring关闭整个context的核心方法.</p>
+<p><strong>方法体</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#用于获取刷新和销毁Spring程序的同步监听器.</span><br><span class="line"><span class="keyword">synchronized</span> (<span class="keyword">this</span>.startupShutdownMonitor) &#123;</span><br><span class="line">    <span class="comment">//这里使用了模板方法，将具体实现委托给doClose().</span></span><br><span class="line">    doClose();</span><br><span class="line">    #若注册了JVM关闭钩子，则需取消关闭钩子,因为context已经关闭.</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.shutdownHook != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().removeShutdownHook(<span class="keyword">this</span>.shutdownHook);</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IllegalStateException ex) &#123;</span><br><span class="line">            <span class="comment">// ignore - VM is already shutting down</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-Context状态的重置-close事件发布-以及销毁Bean"><a href="#3-Context状态的重置-close事件发布-以及销毁Bean" class="headerlink" title="3. Context状态的重置,close事件发布,以及销毁Bean"></a>3. Context状态的重置,close事件发布,以及销毁Bean</h3><p>上面的方法主要还是获取了SpringContext启动和关闭的锁.执行doClose(),并移除JVM停止钩子。接下来看下doClose()的具体方法.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//实际执行关闭Context的方法(发布Context关闭事件,销毁工厂内所有单例Bean,)</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doClose</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.active.get() &amp;&amp; <span class="keyword">this</span>.closed.compareAndSet(<span class="keyword">false</span>, <span class="keyword">true</span>)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">            logger.debug(<span class="string">"Closing "</span> + <span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        LiveBeansView.unregisterApplicationContext(<span class="keyword">this</span>);</span><br><span class="line">        <span class="comment">//发布关闭事件</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            publishEvent(<span class="keyword">new</span> ContextClosedEvent(<span class="keyword">this</span>));</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">            logger.warn(<span class="string">"Exception thrown from ApplicationListener handling ContextClosedEvent"</span>, ex);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//停止所有的生命周期bean，以避免在单个销毁期间造成延迟。</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.lifecycleProcessor != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.lifecycleProcessor.onClose();</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">                logger.warn(<span class="string">"Exception thrown from LifecycleProcessor on context close"</span>, ex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//销毁缓存在context中BeanFactory中的所有单例。</span></span><br><span class="line">        destroyBeans();</span><br><span class="line">        <span class="comment">//关闭上下文本身的状态</span></span><br><span class="line">        closeBeanFactory();</span><br><span class="line">        <span class="comment">//模板方法，预留子类做一些最后的清理工作。</span></span><br><span class="line">        onClose();</span><br><span class="line">        <span class="comment">//重新设置本地的监听器为待刷新状态</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.earlyApplicationListeners != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.applicationListeners.clear();</span><br><span class="line">            <span class="keyword">this</span>.applicationListeners.addAll(<span class="keyword">this</span>.earlyApplicationListeners);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//切换到未active状态.(用于再次确认)</span></span><br><span class="line">        <span class="keyword">this</span>.active.set(<span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-销毁Bean集合-去除其Context注册-移除引用关系"><a href="#4-销毁Bean集合-去除其Context注册-移除引用关系" class="headerlink" title="4. 销毁Bean集合.去除其Context注册(移除引用关系)"></a>4. 销毁Bean集合.去除其Context注册(移除引用关系)</h3><p>closeBeanFactory()方法也就是将BeanFactory设置为null使其失去引用,让JVM回收它。onClose();为子类预留的模板方法。<br>重点看一下销毁实例的<strong>destroyBeans()</strong>方法.</p>
+<p>此方法在DefaultListableBeanFactory的实现为:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroySingleton</span><span class="params">(String beanName)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">super</span>.destroySingleton(beanName);</span><br><span class="line">       <span class="comment">//将Set集合manualSingletonNames的beanName全部移除.</span></span><br><span class="line">	removeManualSingletonName(beanName);</span><br><span class="line">       <span class="comment">//清空allBeanNamesByType和singletonBeanNamesByType</span></span><br><span class="line">	clearByTypeCache();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这里并没有具体的方法，而是封装了一层。继续往下看DefaultSingletonBeanRegistry的实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroySingletons</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</span><br><span class="line">        logger.trace(<span class="string">"Destroying singletons in "</span> + <span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">         <span class="keyword">this</span>.singletonsCurrentlyInDestruction = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    String[] disposableBeanNames;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>.disposableBeans) &#123;</span><br><span class="line">        disposableBeanNames = StringUtils.toStringArray(<span class="keyword">this</span>.disposableBeans.keySet());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = disposableBeanNames.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        destroySingleton(disposableBeanNames[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//销毁所有bean后,清空保存对象关系的Map</span></span><br><span class="line">    <span class="keyword">this</span>.containedBeanMap.clear();</span><br><span class="line">    <span class="keyword">this</span>.dependentBeanMap.clear();</span><br><span class="line">    <span class="keyword">this</span>.dependenciesForBeanMap.clear();</span><br><span class="line">    <span class="comment">//清理单例的缓存</span></span><br><span class="line">    clearSingletonCache();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面的代码我们可以看到，大多都是去除Bean或者BeanNames在Set(name)或者Map(name,instance)中的引用. 在Spring的注释上,写为移除注册实例.也就是这些Bean被注册到了许许多多的Map中.BeanName被注册到Set中.最终的结果就是注册到Context中,交由IOC管理其生命周期。   </p>
+<p>这里移除注册以便去除引用,让JVM垃圾收回时收回这些类.我们来到单个的销毁代码.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroySingleton</span><span class="params">(String beanName)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//清空当前name的注册到Context中的信息。</span></span><br><span class="line">	removeSingleton(beanName);</span><br><span class="line">	<span class="comment">//移除Bean在DisposableBean集合中的引用.</span></span><br><span class="line">	DisposableBean disposableBean;</span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.disposableBeans) &#123;</span><br><span class="line">		disposableBean = (DisposableBean) <span class="keyword">this</span>.disposableBeans.remove(beanName);</span><br><span class="line">	&#125;</span><br><span class="line">       <span class="comment">//实际销毁Bean的方法.</span></span><br><span class="line">	destroyBean(beanName, disposableBean);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-销毁Bean"><a href="#5-销毁Bean" class="headerlink" title="5. 销毁Bean"></a>5. 销毁Bean</h3><p>上面的方法仍是移除相关注册，下面实际销毁Bean的destroyBean方法则</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">destroyBean</span><span class="params">(String beanName, @Nullable DisposableBean bean)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//首先触发其依赖Bean的销毁</span></span><br><span class="line">	Set&lt;String&gt; dependencies;</span><br><span class="line">       <span class="comment">//在完全同步的情况下，以保证断开Set中的连接</span></span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.dependentBeanMap) &#123;</span><br><span class="line">		dependencies = <span class="keyword">this</span>.dependentBeanMap.remove(beanName);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (dependencies != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</span><br><span class="line">			logger.trace(<span class="string">"Retrieved dependent beans for bean '"</span> + beanName + <span class="string">"': "</span> + dependencies);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (String dependentBeanName : dependencies) &#123;</span><br><span class="line">			destroySingleton(dependentBeanName);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//现在将bean销毁，调用bean本身的销毁方法.</span></span><br><span class="line">	<span class="keyword">if</span> (bean != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			bean.destroy();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">			<span class="keyword">if</span> (logger.isWarnEnabled()) &#123;</span><br><span class="line">				logger.warn(<span class="string">"Destruction of bean with name '"</span> + beanName + <span class="string">"' threw an exception"</span>, ex);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//触发与此Bean为依赖关系的销毁</span></span><br><span class="line">	Set&lt;String&gt; containedBeans;</span><br><span class="line">       <span class="comment">//在完全同步的情况下，以保证断开Set中的连接</span></span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.containedBeanMap) &#123;</span><br><span class="line">		containedBeans = <span class="keyword">this</span>.containedBeanMap.remove(beanName);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (containedBeans != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">for</span> (String containedBeanName : containedBeans) &#123;</span><br><span class="line">			destroySingleton(containedBeanName);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//从其他bean的依赖Map中删除销毁的当前bean。</span></span><br><span class="line">	<span class="keyword">synchronized</span> (<span class="keyword">this</span>.dependentBeanMap) &#123;</span><br><span class="line">		<span class="keyword">for</span> (Iterator&lt;Map.Entry&lt;String, Set&lt;String&gt;&gt;&gt; it = <span class="keyword">this</span>.dependentBeanMap.entrySet().iterator(); it.hasNext();) &#123;</span><br><span class="line">			Map.Entry&lt;String, Set&lt;String&gt;&gt; entry = it.next();</span><br><span class="line">			Set&lt;String&gt; dependenciesToClean = entry.getValue();</span><br><span class="line">			dependenciesToClean.remove(beanName);</span><br><span class="line">			<span class="keyword">if</span> (dependenciesToClean.isEmpty()) &#123;</span><br><span class="line">				it.remove();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//删除销毁的bean准备的依赖项信息。</span></span><br><span class="line">	<span class="keyword">this</span>.dependenciesForBeanMap.remove(beanName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的销毁Bean代码中,我们看到:</p>
+<ol>
+<li>首先在同步的状态(保证并发安全)下移除依赖Map中的有关bean的依赖关系, 其次再递归的销毁其依赖Bean.</li>
+<li>然后销毁此Bean</li>
+<li>再之后移除与此Bean为依赖关系的Bean的依赖，并销毁这些Bean.</li>
+<li>最后从其他Bean中依赖此Bean的Map中移除Bean和移除Bean提供的依赖项信息,</li>
+</ol>
+<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h3><p>最后梳理一下整个流程</p>
+<ol>
+<li>执行ExitCodeGennator的getExitCode()方法，发布ExitCodeEvent事件。</li>
+<li>获取同步监听器的锁,进入方法体.</li>
+<li>发布关闭事件,执行lifecycleProcessor的关闭方法</li>
+<li>清空当前name的注册到Context中的信息。</li>
+<li>移除Bean在DisposableBean集合中的引用.</li>
+<li>触发当前Bean依赖关系Bean的销毁,递归执行</li>
+<li>销毁当前Bean</li>
+<li>触发当前Bean包含关系的Bean的销毁,递归执行</li>
+<li>从其他bean的依赖Map中删除销毁的当前bean。</li>
+<li>删除销毁的bean准备的依赖项信息。</li>
+<li>清空保存对象关系的Map(containedBeanMap,dependentBeanMap,dependenciesForBeanMap)</li>
+<li>清除单例缓存</li>
+<li>将Set集合manualSingletonNames的beanName全部移除.清空allBeanNamesByType和singletonBeanNamesByType</li>
+<li>关闭Context本身的状态(BeanFactory设置为空),可选(最后的清理工作)</li>
+<li>重新设置本地的监听器为待刷新状态,设置active状态</li>
+<li>移除JVM退出钩子</li>
+</ol>
+<p>从上面的代码来看</p>
+<h2 id="二-使用代码的方式关闭-Spring-应用"><a href="#二-使用代码的方式关闭-Spring-应用" class="headerlink" title="二. 使用代码的方式关闭 Spring 应用"></a>二. 使用代码的方式关闭 Spring 应用</h2><p>从上面 Spring 生命周期的源码来看，Spring的退出也就是关闭Spring的Context.</p>
+<ol>
+<li>通过SpringApplication静态方法关闭</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ConfigurableApplicationContext ctx = SpringApplication.run(ExampleApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line"><span class="keyword">int</span> exitCode = SpringApplication.exit(ctx);</span><br><span class="line">System.exit(exitCode);</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>通过ConfigurableApplicationContext的方法关闭</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ConfigurableApplicationContext ctx = SpringApplication.run(ExampleApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">ctx.close();</span><br><span class="line">System.exit(exitCode);</span><br></pre></td></tr></table></figure>
+<p>两种代码都是可用的，并无明显差别。</p>
+<h2 id="三-使用-Spring-Boot-Actuator-关闭-Spring-应用"><a href="#三-使用-Spring-Boot-Actuator-关闭-Spring-应用" class="headerlink" title="三. 使用 Spring Boot Actuator 关闭 Spring 应用"></a>三. 使用 Spring Boot Actuator 关闭 Spring 应用</h2><ol>
+<li>添加 spring-boot-starter-actuator 依赖</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>在配置文件中开启</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">management.endpoint.shutdown.enabled=<span class="keyword">true</span></span><br><span class="line">management.endpoint.info.enabled=<span class="keyword">true</span></span><br><span class="line">management.endpoints.web.exposure.include=*</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><p>使用actuator提供的endpoint关闭程序</p>
+<p> curl -i -X POST <a href="http://localhost:8080/actuator/shutdown" target="_blank" rel="noopener">http://localhost:8080/actuator/shutdown</a></p>
+</li>
+</ol>
+<p>得到以下返回</p>
+<pre><code>HTTP/1.1 200 
+Content-Type: application/vnd.spring-boot.actuator.v2+json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Sun, 05 Aug 2018 18:11:27 GMT
+
+{
+&quot;message&quot;:&quot;Shutting down, bye...&quot;
+}
+</code></pre><h2 id="四-通过添加ApplicationPidFileWriter-执行脚本关闭"><a href="#四-通过添加ApplicationPidFileWriter-执行脚本关闭" class="headerlink" title="四. 通过添加ApplicationPidFileWriter 执行脚本关闭"></a>四. 通过添加ApplicationPidFileWriter 执行脚本关闭</h2>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/03/08/gradle-笔记/" data-toggle="tooltip" data-placement="top" title="gradle 笔记">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/03/05/Manjaro-Arch-Linux-网络唤醒全攻略/" data-toggle="tooltip" data-placement="top" title="Manjaro/Arch Linux 网络唤醒全攻略">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#源码" title="源码">源码</a>
+                        
+                          <a class="tag" href="/tags/#Spring" title="Spring">Spring</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

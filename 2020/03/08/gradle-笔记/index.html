@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          gradle 笔记 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2020/03/08/gradle-笔记/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#学习" title="学习">学习</a>
+                        
+                    </div>
+                    <h1>gradle 笔记</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2020-03-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>gradle是基于 ant 和 maven 构建项目自动化构建工具.相比于Maven的XML配置,gradle的groovy脚本更容易编写.</p>
+<p>同时,得益于wrapper,使得gradle可选择固定版本作为项目的构建工具.减少了兼容性问题.<br><a id="more"></a></p>
+<h2 id="一-gradle-基础"><a href="#一-gradle-基础" class="headerlink" title="一. gradle 基础"></a>一. gradle 基础</h2><h3 id="gradle-基础概念"><a href="#gradle-基础概念" class="headerlink" title="gradle 基础概念"></a>gradle 基础概念</h3><ol>
+<li><p>使用wrapper 绑定项目到具体gradle 版本.</p>
+<p> ./gradle wrapper</p>
+</li>
+</ol>
+<p><strong>gradle项目目录</strong></p>
+<pre><code>--gradle
+    |--wrapper
+         |--gradle-wrapper.jar           #用于下载指定版本的gradle
+         |--granle-wrapper.properties
+--gradlew                               #运行程序
+--gradle.bat
+--build.gradle                          #gradle脚本
+</code></pre><ol start="2">
+<li><p>gradle UserHome<br>文件位置:~/.gradle</p>
+<p> <strong>部分文件夹</strong><br> –cache                          #类似Maven的.m2，但是不同于.m2,它存放了更多的文件.如缓存.<br> –init.d                         #存放gradle运行之前执行的文件.   如可用于全局替换远程仓库<br> –wrapper                        #使用wrapper运行构建时，下载的安装包存放在这里</p>
+</li>
+<li><p>daemon<br>在Maven中，每次启动程序都将创建一个JVM，用完即毁。</p>
+</li>
+</ol>
+<p>而gradle的daemon则不一样，gradle启动构建时，会创建一个Client JVM，它只负责请求转发，真正做一些处理工作的是daemon JVM，</p>
+<p>这个daemon 会在第一次启动后一直存在，也会缓存之前构建的Jar包，从而时构建速度加快。</p>
+<p>daemon存在兼容问题(如client版本和daemon不一致.) daemon默认开启.</p>
+<h3 id="groovy基础"><a href="#groovy基础" class="headerlink" title="groovy基础"></a>groovy基础</h3><p>groovy 是一个基于JVM的脚本语言。</p>
+<ol>
+<li>基础语法</li>
+<li>闭包(比较核心的一个类,是开放的匿名代码块)</li>
+<li>授权策略(Delegate)[在闭包中访问属性而不显式设置接收者对象时涉及]</li>
+</ol>
+<h2 id="二-gradle-构建"><a href="#二-gradle-构建" class="headerlink" title="二. gradle 构建"></a>二. gradle 构建</h2><p><strong>构建的生命周期</strong></p>
+<ol>
+<li>初始化阶段(识别是否为单/多项目,并为项目创建Project对象)</li>
+<li>配置阶段(对刚才创建的Project对象进行配置,本质上为对build.gradle当成groovy文件执行一遍).此阶段的classpath为gradle本身.</li>
+<li>执行阶段(执行build.gradle 上一步的配置阶段不一定会完整执行所有task中内容,而这一步则是明确执行task).此阶段为complieJava阶段,classpath为src/main/java</li>
+</ol>
+<p>gradle项目/gradle构建就是将LifeCycle和一堆API结合起来.</p>
+<h3 id="gradle核心模型"><a href="#gradle核心模型" class="headerlink" title="gradle核心模型"></a>gradle核心模型</h3><ol>
+<li>Project(项目): 一切无主/无来源的方法,都会去Project上面查找.</li>
+<li>Task(任务); 基于Groovy使得任务的创建可以是动态的.展现了gradle的灵活性. </li>
+<li>LifeCycle和Hook(生命周期和钩子): 如Project中的afterEvaluate方法是在配置阶段,build.gradle被evaluate(执行)之后执行的钩子方法.</li>
+</ol>
+<h2 id="三-gradle-插件编写"><a href="#三-gradle-插件编写" class="headerlink" title="三. gradle 插件编写"></a>三. gradle 插件编写</h2><h3 id="1-构建逻辑的复用-简单插件"><a href="#1-构建逻辑的复用-简单插件" class="headerlink" title="1. 构建逻辑的复用(简单插件)"></a>1. 构建逻辑的复用(简单插件)</h3><p>编写: 在build.gradle中,编写类实现Plugin接口.</p>
+<p>使用: apply plugin : ‘类名’</p>
+<h3 id="2-script插件"><a href="#2-script插件" class="headerlink" title="2. script插件"></a>2. script插件</h3><p>编写: 在other.gradle(名称任意,同简单插件)</p>
+<p>使用: apply plugin: “other.gradle” </p>
+<h3 id="3-buildSrc插件"><a href="#3-buildSrc插件" class="headerlink" title="3. buildSrc插件"></a>3. buildSrc插件</h3><h4 id="前置知识-buildScript方法"><a href="#前置知识-buildScript方法" class="headerlink" title="前置知识(buildScript方法)"></a>前置知识(buildScript方法)</h4><p>用于为build.gradle引入依赖.(因为build.gradle中的依赖是作用于src/main/java,也就是项目本身,而build.gradle中编写插件,可能也需要引入一些依赖包.而build.gradle和src/main/java是不同,完全独立的两套项目)</p>
+<p>编写: 在build.gradle中使用buildScript()方法.则可以使用dependencies方法为build.gradle添加依赖.</p>
+<p>此种方法可以将编写好的插件添加到Maven远程仓库,然后通过buildScript,在其他项目的build.gradlei中使用插件.</p>
+<h4 id="buildSrc插件编写使用"><a href="#buildSrc插件编写使用" class="headerlink" title="buildSrc插件编写使用"></a>buildSrc插件编写使用</h4><p>编写: 在项目内创建一个gradle项目,名为buildSrc.在此gradle中src/main/java编写类实现Plugin接口</p>
+<p>使用: apply plugin: ‘类名’</p>
+<p>原理: 在build.gradle构建运行之前，若发现项目内含有buildSrc子项目,则会先将buildSrc编译,并将编译后生成的buildSrc.jar 添加到当前项目build.gradle的classpath中(同buildScript方法)</p>
+<h3 id="4-Binary插件-发布插件"><a href="#4-Binary插件-发布插件" class="headerlink" title="4. Binary插件(发布插件)"></a>4. Binary插件(发布插件)</h3><p>编写: 同buildSrc一样,只不过名称自定义且独立为一个项目.</p>
+<p>使用: 刚才编写的插件gradle项目编译,并发布到本地/远程仓库中去.使用buildScript方法导入此项目.</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/03/09/JAVA7-HashMap源码解析/" data-toggle="tooltip" data-placement="top" title="JAVA7-HashMap源码解析">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/03/06/Spring_生命周期结束源码解析/" data-toggle="tooltip" data-placement="top" title="Spring 生命周期结束源码解析">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#学习" title="学习">学习</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

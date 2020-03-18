@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/page/3/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/images/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Roiocam&#39;Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">世界上有太多的未知等待着我们去探索,我们渴望真相,渴望事物的真理,所以我们学习.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2019/07/01/Java在字符串池使用的搜索算法/">
+        <h2 class="post-title">
+            Java在字符串池使用的搜索算法
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一、字符串字符串的生成由于Java中字符串的不变性，JVM可以通过在池中存储每个文字字符串的一个副本来优化他们的内存分配。
+
+当我们创建String 变量并赋值时，JVM会先在池中搜索相同值的String。如果存在，则简单返回对其内存地址的引用，若无，则添加该String到池中，并返回。
+
+当我们使用new 生成一个String对象时，编译器会创建一个新的对象，并将其存储在JAVA的Heap......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-07-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/06/28/校验前端参数的几种方式/">
+        <h2 class="post-title">
+            校验前端参数的几种方式
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            作为后端不应相信前端传递的参数
+1.@Valid和@Validated@Valid 注解是 Javax 提供，基于标准JSR-303规范，可用于【方法，构造函数、方法参数和成员属性上】
+@Validated 注解是 Spring 提供，基于Spring’s JSR303，是标准JSR-303的变种，可用于【类型、方法、方法参数上。不可用于成员属性上】
+使用@Valid注解时，校验不通过将会抛......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-28
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/06/27/代码层性能调优/">
+        <h2 class="post-title">
+            代码层面性能调优
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            介入调优的时期代码编码时保证有效编码。
+
+减少磁盘I/O操作
+降低竞争锁
+使用高效算法
+设计价格这种包含折扣、红包活动时，使用装饰模式设计这个业务。
+性能测试时
+
+分析预期数据和压力，进行压力测试，通过性能分析，统计工具来统计各项性能指标
+监控性能分析日志监控以及性能统计日志。
+哪些数据可以体验性能CPU
+代码递归导致无限循环
+正则表达式引起回溯（）
+JVM频繁Full GC
+多线程造成大量......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/06/27/Redis实现限流/">
+        <h2 class="post-title">
+            Redis实现限流
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            突发奇想如何让API服务实现限流，在网络上查阅了一些实现，常用的限流策略：
+
+Nginx接入层按照一定规则：帐号、IP、系统调用逻辑在Nginx层限流。
+业务系统通过业务代码控制流量。这个流量被成为信号量，可以理解一种锁。
+一、关于脚本的两种方式来限流
+
+业务：实现访问者(IP)在一定时间Time只能访问Limit次
+1.使用非脚本的实现123456789101112131415161718......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-27
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/06/25/记录一次JPA动态修改数据库的探索历程/">
+        <h2 class="post-title">
+            记录一次JPA动态修改数据库的探索历程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            缘由在重构项目时，因系统大量使用了分表逻辑，对每个不同的数据使用了不同的数据库，且新项目都为MyBatis框架，对SQL的操作更加容易。故探索了JPA的实现方案。
+过程1. 分离切库和存储线程变量由于原业务，切库和存储线程的变量的信息耦合在一起，存储时在业务层，切库时却在DAO层。
+存储分离：使用AOP切入Service层，在Controller调用Service层方法时，也就是服务接受了用......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-25
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/06/25/MongoDB的副本集群和分片集群/">
+        <h2 class="post-title">
+            MongoDB的副本集群和分片集群
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            简介：在 MySQL ，我们对数据进行备份时的通用做法是主从复制，但是主从复制的本质还是一个单福本应用。在 MongoDB 中，推荐建立副本集保证服务的容错性。
+一、副本集概念副本集在多台机器同步数据，提供了数据冗余，扩展了数据可用性。避免服务在故障时导致丢失数据。除此之外在一些场景还有扩展读性能的作用。
+副本集和主从同步相似，主MongoDB实例接受所有的写操作， 其他实例接受主 Mong......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-25
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/05/29/InnoDB数据隔离级别/">
+        <h2 class="post-title">
+            InnoDB数据库隔离级别
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一次封锁在大量并发访问的应用里，为了防止死锁，一般推荐使用一次封锁法：在方法的开始阶段，已经预先知道会用到哪些数据，全部锁住，在运行之后全部解锁。
+这种方法可以有效避免循环死锁。却不适用于数据库中。
+因为在事务开始阶段，数据库并不知道会用到哪些数据。
+二段锁数据库遵循的是二段锁协议，将事务分为两个阶段，加锁和解锁阶段。
+
+加锁阶段：在该阶段可以进行加锁操作，在对任何数据进行读操作之前要申请获......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-05-29
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/05/29/涉及分布式及高并发笔记/">
+        <h2 class="post-title">
+            涉及分布式及高并发笔记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            分布式系统/集群简介对于分布式系统/集群，主要是一个问题就是需要解决数据一致性、以及分布式系统/集群本身的业务特点，数据备份容灾以及对解决高并发性能。
+特点1.发布与订阅涉及到分布式/集群的系统，集群中每个主节点都会有多个备份节点，主节点与备份节点之间的数据同步复制，大部分采用了发布与订阅的模式，如Kafka的Pull和Push，如ZooKeeper的配置中心。
+发布/订阅系统的Push模式......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-05-29
+    </p>
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+        <li class="previous">
+            <a href="/page/2/">&larr; Newer Posts</a>
+        </li>
+    
+    
+</ul>
+
+
+
+                <!-- 如果开启评论功能 -->
+                
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                            <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
+                            
+                        
+                            
+                            <a href="/tags/#编码" title="编码" rel="2">编码</a>
+                            
+                        
+                            
+                            <a href="/tags/#I/O" title="I/O" rel="2">I/O</a>
+                            
+                        
+                            
+                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#JAVA" title="JAVA" rel="7">JAVA</a>
+                            
+                        
+                            
+                            <a href="/tags/#集合" title="集合" rel="3">集合</a>
+                            
+                        
+                            
+                            <a href="/tags/#源码" title="源码" rel="4">源码</a>
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#算法" title="算法" rel="2">算法</a>
+                            
+                        
+                            
+                            <a href="/tags/#Linux" title="Linux" rel="2">Linux</a>
+                            
+                        
+                            
+                            <a href="/tags/#记录" title="记录" rel="3">记录</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#探索" title="探索" rel="3">探索</a>
+                            
+                        
+                            
+                            <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#分表" title="分表" rel="2">分表</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/images/avatar.jpg" />
+                        
+
+                        
+                            <p>Seeker</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                                <li>
+                                    <a target="_blank" href="https://twitter.com/roiocam">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="http://weibo.com/Roiocam">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+
+                            
+                                <li>
+                                    <a target="_blank"  href="https://github.com/Roiocam">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

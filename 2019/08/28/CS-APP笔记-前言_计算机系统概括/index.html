@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          CS:APP笔记:计算机系统概括 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2019/08/28/CS-APP笔记-前言_计算机系统概括/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#深入理解操作系统" title="深入理解操作系统">深入理解操作系统</a>
+                        
+                    </div>
+                    <h1>CS:APP笔记:计算机系统概括</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2019-08-28
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="课程大纲"><a href="#课程大纲" class="headerlink" title="课程大纲"></a>课程大纲</h2><h3 id="一-程序和数据"><a href="#一-程序和数据" class="headerlink" title="一.程序和数据"></a>一.程序和数据</h3><h3 id="二-内存的层次结构"><a href="#二-内存的层次结构" class="headerlink" title="二.内存的层次结构"></a>二.内存的层次结构</h3><h3 id="三-异常控制流"><a href="#三-异常控制流" class="headerlink" title="三.异常控制流"></a>三.异常控制流</h3><h3 id="四-虚拟内存"><a href="#四-虚拟内存" class="headerlink" title="四.虚拟内存"></a>四.虚拟内存</h3><h3 id="五-网络和并发"><a href="#五-网络和并发" class="headerlink" title="五.网络和并发"></a>五.网络和并发</h3><a id="more"></a>
+<h2 id="一-C程序被编译的过程"><a href="#一-C程序被编译的过程" class="headerlink" title="一.C程序被编译的过程"></a>一.C程序被编译的过程</h2><p><strong>编译为可执行文件:</strong>root&gt; gcc -o hello hello.c<br>    此时可通过root&gt; ./hello 执行hello程序<br>上面的过程可分解为:</p>
+<ol>
+<li>hello.c(文本,源代码)  –&gt;被预处理(cpp):读取头文件并插入到程序文本</li>
+<li>hello.i(修改后的文本)  –&gt;编译器(ccl)编译:被编译翻译成汇编语言</li>
+<li>hello.s(汇编程序)   –&gt;被汇编器(as)翻译成机器语言</li>
+<li>hello.o(目标程序-二进制)  –&gt; 被重定向:被链接到到目标文件，可以被加载到内存</li>
+<li>hello(目标程序)</li>
+</ol>
+<p><strong>链接错误：链接时，可能因为定义相同名称的两个全局变量等..只有在运行时才会出现的链接错误</strong></p>
+<h2 id="二-硬件组成"><a href="#二-硬件组成" class="headerlink" title="二.硬件组成"></a>二.硬件组成</h2><ol>
+<li>总线:贯穿整个系统的管道。被设计成传送定长的字节块(word)</li>
+<li>I/O设备:通常为四个I/O设备:用户输入的键盘，鼠标。用户输出的显示器。存储数据的磁盘驱动器。通过控制器/适配器连接总线。</li>
+<li>主存:临时存储器，由动态随机存取存储器(DRAM)芯片组成。从逻辑上说，存储器是一个线性的字节数组，每个字节有唯一的地址（索引）。</li>
+<li>处理器：解释和执行主存中指令的引擎。核心是一个大小为一个字的存储器(寄存器)，成为程序计数器。在任意时刻，PC都会指向主存中某条机器语言指令。执行指令的顺序由指令集架构决定。CPU的一些操作:<ul>
+<li>加载:从主存复制一个字节到寄存器。</li>
+<li>存储:从寄存器复制一个字节到主存</li>
+<li>操作:把两个寄存器内存复制的到ALU，ALU对其进行算术运算，并将结果存储到寄存器。</li>
+<li>跳转:从指令本身抽取一个字，复制到程序计数器(CPU)中</li>
+</ul>
+</li>
+</ol>
+<h2 id="三-HelloWorld程序的硬件过程"><a href="#三-HelloWorld程序的硬件过程" class="headerlink" title="三.HelloWorld程序的硬件过程"></a>三.HelloWorld程序的硬件过程</h2><ol>
+<li>等待用户输入，shell读取命令到寄存器,寄存器存储到主存中。</li>
+<li>用户输入结束后，shell执行指令从磁盘加载hello文件复制到主存。</li>
+<li>处理器开始读取执行hello程序,再从寄存器复制到显示器。<h3 id="1-高速缓存的重要性"><a href="#1-高速缓存的重要性" class="headerlink" title="1.高速缓存的重要性"></a>1.高速缓存的重要性</h3>从上面的执行过程中，系统花费了大量时间把信息从一个地方到另一个地方。</li>
+<li>加载时:hello程序从磁盘到主存，数据串”hello world\n”从磁盘到主存</li>
+<li>执行时:hello程序从主存被复制到寄存器，数据串”hello world\n”从主存到显示设备<br>由于机械原理，容量大的存储设备运行得更慢。磁盘驱动器的开销比主存大1000倍。对于处理器而言又是100万倍。<br>针对这种差异，系统设计者采用了更小更快的存储设备，成为高速缓存存储器(cache)。也就是现在处理器的l1,l2,l3缓存。<br>L1,L2缓存是用一种叫做静态随机访问存储器(SRAM)实现的。<br>系统可以获得一个很大并且快速的存储器，原因是利用了高速缓存的局部性原理（程序具有访问局部区域里的数据和代码的趋势）。<h3 id="2-存储器层次结构"><a href="#2-存储器层次结构" class="headerlink" title="2.存储器层次结构"></a>2.存储器层次结构</h3></li>
+</ol>
+<ul>
+<li>L0. 寄存器            字</li>
+<li>L1. 高速缓存(SRAM)     行</li>
+<li>L2. 高速缓存(SRAM)     行</li>
+<li>L3. 高速缓存(SRAM)     行</li>
+<li>L4. 主存(DRAM)        行</li>
+<li>L5. 本地二级存储(磁盘)  磁盘块</li>
+<li>L6. 远程二级存储(Web)  文件</li>
+</ul>
+<h2 id="四-操作系统管理硬件"><a href="#四-操作系统管理硬件" class="headerlink" title="四.操作系统管理硬件"></a>四.操作系统管理硬件</h2><h3 id="1-进程"><a href="#1-进程" class="headerlink" title="1.进程"></a>1.进程</h3><p>进程是操作系统对一个正在运行的程序一种抽象。单核系统中多个进程的指令是交错执行的，形成并行的假象。<br><strong>上下文切换</strong>：这种交错执行的机制称之为上下文切换（通过处理器在进程间切换实现）<br><strong>上下文</strong>：操作系统保持跟踪进程所需要的所有状态信息。这种状态，也就是上下文。<br><strong>内核</strong>：操作系统管理全部进程所用代码和数据结构的集合。</p>
+<h3 id="2-线程"><a href="#2-线程" class="headerlink" title="2.线程"></a>2.线程</h3><p>一个进程可以由多个称为<strong>线程</strong>的执行单元组成，线程运行在进程的上下文，并共享同样的代码和全局数据。<br>线程间的数据共享比进程间的数据共享更加容易和高效。</p>
+<h3 id="3-虚拟内存"><a href="#3-虚拟内存" class="headerlink" title="3.虚拟内存"></a>3.虚拟内存</h3><p>虚拟内存是一个抽象概念，为每个进程提供一个假象，即每个进程都在独占使用主存。<br><strong>虚拟地址空间</strong>：每个进程看到的内存空间都是一致的。<br>进程的虚拟地址空间：</p>
+<ol>
+<li>内核虚拟空间         |地址空间顶部，为内核保留。用户代码不可见，必须通过调用内核执行。</li>
+<li>栈(用户栈)           |用户虚拟地址空间顶部。运行时创建，编译器用其实现函数调用。可以动态扩展收缩。 </li>
+<li>共享库的内存映射区域   |地址空间中间部分。存放C标准库和数学库。  </li>
+<li>运行时堆             |代码和数据区之上，在运行时由malloc创建，一开始运行就被指定了大小，可以动态扩展收缩。</li>
+<li>读/写数据            |从文件中加载</li>
+<li>只读的代码和数据      |从文件中加载<h3 id="4-文件"><a href="#4-文件" class="headerlink" title="4.文件"></a>4.文件</h3>文件就是文件序列。每个I/O设备（磁盘，键盘，显示器，网路）都是文件。系统的所有I/O操作都是通过Unix I/O系统函数调用读写文件来实现。</li>
+</ol>
+<p>#<strong>网络也被视为一个I/O设备</strong></p>
+<h2 id="五-重要概念"><a href="#五-重要概念" class="headerlink" title="五.重要概念"></a>五.重要概念</h2><h3 id="1-Amdahl定律"><a href="#1-Amdahl定律" class="headerlink" title="1.Amdahl定律"></a>1.Amdahl定律</h3><p><strong>思想</strong>：当我们对系统的某个部分加速时，其对系统整体性能的影响取决于该部分的重要性和加速程度。<br>设:T(old)=系统执行应用程序需要的时间。a=系统某部分需要执行时间和该时间的比例，该部分性能提升比例=k，则该部分初始化所需要时间=aT(old)，现在所需要时间为(aT(old))/k,则总执行时间为：</p>
+<pre><code>T(new)=(1-a)T(old) + (aT(old))/k = T(old)[(1-a)+a/k]
+</code></pre><p>所以计算加速比S=T(old)/T(new)为</p>
+<pre><code>S=1/[(1-a)+a/k]
+</code></pre><p><strong>主要观点</strong>：要想显著加速整个系统，必须提升全系统中相当大的部分的速度。</p>
+<p>练习题1: S=1/(1-0.6)+(0.6/1.5)=1.25<br>练习题2: 1.67=1/（1-0.6)+(0.6/x)  解得x=3.必须以三倍速度(300km/h)<br>练习题3: 2=1/(1-0.8+0.8/x)        解得x=2.67</p>
+<p><strong>特殊情况</strong>：Amdahl定律有一个特殊情况是考虑k趋向正无穷时的效果。这意味着，我们可以取系统的某一部分加速到一个点，在这个点上，花费时间可以忽略不计。则</p>
+<pre><code>S=1/(1-a)
+</code></pre><p><strong>适用范围</strong>：加速计算机系统，公司降低刀片制造成本，学生提高绩点平均值等。</p>
+<h3 id="2-并发和并行"><a href="#2-并发和并行" class="headerlink" title="2.并发和并行"></a>2.并发和并行</h3><p><strong>并发</strong>：一个同时具有多个活动的系统。<br><strong>并行</strong>：用并发来使一个系统运行得更快。</p>
+<h4 id="1-线程级并发-在一个进程执行多个控制流"><a href="#1-线程级并发-在一个进程执行多个控制流" class="headerlink" title="(1).线程级并发:在一个进程执行多个控制流"></a>(1).线程级并发:在一个进程执行多个控制流</h4><p><strong>超线程</strong>：也称为同时多线程，一项允许一个CPU执行多个控制流的技术。涉及CPU的某些硬件有多个备份，如程序计数器和寄存器文件，而其他的硬件只有一份，如浮点算术运算单元。<br>举例：i7处理器可以让每个核执行两个线程，那么4核系统实际上可以并行执行8个线程。</p>
+<h4 id="2-指令级并行-现代处理器可以同时执行多条指令"><a href="#2-指令级并行-现代处理器可以同时执行多条指令" class="headerlink" title="(2).指令级并行:现代处理器可以同时执行多条指令"></a>(2).指令级并行:现代处理器可以同时执行多条指令</h4><p><strong>超标量</strong>：处理器可以达到比一个周期一条指令更快的执行速率。</p>
+<h4 id="3-单指令，多数据并行：允许一条指令产生多个可以并行执行的操作。（SIMD并行）"><a href="#3-单指令，多数据并行：允许一条指令产生多个可以并行执行的操作。（SIMD并行）" class="headerlink" title="(3).单指令，多数据并行：允许一条指令产生多个可以并行执行的操作。（SIMD并行）"></a>(3).单指令，多数据并行：允许一条指令产生多个可以并行执行的操作。（SIMD并行）</h4><p>为了提高处理影响，声音，视频是数据应用的执行速度。最近的处理器都具有并行对8对单精度浮点数（C数据结构float)做加法的指令。</p>
+<h3 id="3-抽象的重要性"><a href="#3-抽象的重要性" class="headerlink" title="3.抽象的重要性"></a>3.抽象的重要性</h3><ul>
+<li>指令集架构提供了对实际处理器硬件的抽象。<br>操作系统提供了三个基本抽象：</li>
+</ul>
+<ol>
+<li>文件是对I/O设备的抽象。</li>
+<li>虚拟内存是对程序存储器的抽象。</li>
+<li>进程是对一个正在运行程序的抽象。</li>
+</ol>
+<ul>
+<li>虚拟机是对整个计算机的抽象。</li>
+</ul>
+<h2 id="视频笔记"><a href="#视频笔记" class="headerlink" title="视频笔记:"></a>视频笔记:</h2><p><strong>Ints不是整数,Floats不是实数</strong></p>
+<ul>
+<li>int进行四则运算时，符合交换律结合律，但当结果超过32bit时，数字会溢出。即使是溢出，结果也是符合交换律。</li>
+<li>float进行四则运算时，结果不会溢出，但是不符合交换律和结合律，且有舍入问题，会舍弃一些数字。（同样会溢出）<br><strong>他们都用有限的位组合形式表示在数域中无线扩张的数</strong></li>
+</ul>
+<p><strong>内存很重要</strong></p>
+<ul>
+<li>c不会检查数组边界，操作系统会。</li>
+<li>当在c中使用a[1000]访问一个初始化为a[2]的数组时，程序不会报错，而是修改了其他程序/其他变量的值。（在内存上是a[2]后面的第998位。）（最恐怖的噩梦：调试内存引用的错误，因为它可能在修改后的几天甚至更久后才会出现错误，也可能马上就出现错误）</li>
+<li>双层数组遍历时，行优先遍历比列优先遍历的效率更高。因为在内存上，列优先遍历是遍历每个1，然后遍历每个2[{1,2,3….1024},{1,2,3…1024}….].而行优先则是以自然的递进顺序1,2,3….（数组是顺序结构，在内存上是顺序的）</li>
+</ul>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/08/29/CS-APP笔记-信息的表示和处理/" data-toggle="tooltip" data-placement="top" title="CS:APP笔记:信息的表示和处理">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/08/28/CS-APP笔记-系统I-O/" data-toggle="tooltip" data-placement="top" title="CS:APP笔记:系统I/O">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#深入理解操作系统" title="深入理解操作系统">深入理解操作系统</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

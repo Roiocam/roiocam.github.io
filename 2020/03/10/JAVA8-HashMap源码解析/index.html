@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          JAVA8 HashMap源码解析 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2020/03/10/JAVA8-HashMap源码解析/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#集合" title="集合">集合</a>
+                        
+                          <a class="tag" href="/tags/#源码" title="源码">源码</a>
+                        
+                    </div>
+                    <h1>JAVA8 HashMap源码解析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2020-03-10
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="一-JAVA7的HashMap问题"><a href="#一-JAVA7的HashMap问题" class="headerlink" title="一. JAVA7的HashMap问题"></a>一. JAVA7的HashMap问题</h2><ol>
+<li>扩容时的插入顺序问题,导致多线程下会产生死锁.</li>
+<li>防止哈希碰撞的机制简陋</li>
+</ol>
+<p>为了解决这两个问题,JAVA8做了大量改进,和一些新增.</p>
+<h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><ol>
+<li>实现变为 : 数组 +  链表 / 红黑树</li>
+<li>扩容时插入顺序改进</li>
+<li>函数方法(forEach,compute)</li>
+<li>Map新API</li>
+<li>防止哈希碰撞的机制变更.</li>
+</ol>
+<a id="more"></a>
+<h2 id="二-JAVA8-HashMap源码解析"><a href="#二-JAVA8-HashMap源码解析" class="headerlink" title="二. JAVA8 HashMap源码解析"></a>二. JAVA8 HashMap源码解析</h2><h3 id="类注解"><a href="#类注解" class="headerlink" title="类注解"></a>类注解</h3><p>HashMap类注解的信息比较长,本来本文写了翻译的.但是考虑到篇幅于是只进行概括.</p>
+<ol>
+<li>普通情况下为桶结构的哈希表,当链表过长时将链表树化为红黑树</li>
+<li>链表长度为8时树化(TREEIFY_THRESHOLD)，树节点小于6时(UNTREEIFY_THRESHOLD)退化。</li>
+</ol>
+<p><strong>TREEIFY_THRESHOLD</strong>和<strong>UNTREEIFY_THRESHOLD</strong>是JAVA8的HashMap新增的两个常量,<strong>DEFAULT_INITIAL_CAPACITY</strong>必须为2的n次幂我们已经知道,是基于indexFor方法和位运算的一些性质决定,而<strong>TREEIFY_THRESHOLD</strong>为什么如此呢?我们也要搞清楚.</p>
+<h4 id="TREEIFY-THRESHOLD-和-UNTREEIFY-THRESHOLD"><a href="#TREEIFY-THRESHOLD-和-UNTREEIFY-THRESHOLD" class="headerlink" title="TREEIFY_THRESHOLD 和 UNTREEIFY_THRESHOLD"></a>TREEIFY_THRESHOLD 和 UNTREEIFY_THRESHOLD</h4><p>首先我们先看类注解中有没有提示.</p>
+<pre><code>* Because TreeNodes are about twice the size of regular nodes, we
+* use them only when bins contain enough nodes to warrant use
+* (see TREEIFY_THRESHOLD). And when they become too small (due to
+* removal or resizing) they are converted back to plain bins.  In
+* usages with well-distributed user hashCodes, tree bins are
+* rarely used.  Ideally, under random hashCodes, the frequency of
+* nodes in bins follows a Poisson distribution
+* (http://en.wikipedia.org/wiki/Poisson_distribution) with a
+* parameter of about 0.5 on average for the default resizing
+* threshold of 0.75, although with a large variance because of
+* resizing granularity. Ignoring variance, the expected
+* occurrences of list size k are (exp(-0.5) * pow(0.5, k) /
+* factorial(k)). The first values are:
+*
+* 0:    0.60653066
+* 1:    0.30326533
+* 2:    0.07581633
+* 3:    0.01263606
+* 4:    0.00157952
+* 5:    0.00015795
+* 6:    0.00001316
+* 7:    0.00000094
+* 8:    0.00000006
+* more: less than 1 in ten million
+</code></pre><p>注解中写到（理想情况下，在随机哈希码和默认大小调整阈值为0.75的情况下,存储桶中元素个数出现的频率遵循泊松分布）并且注解给了Lambda平均约为0.5的估算值.(Lambda为单位时间内随机事件的平均发生率,可用统计学的最大似然估计来计算得出).</p>
+<p>并且注解指出,由于大小调整粒度(在HashMap中为容量*负载因子,大于此值则重新调整存储桶的个数,故k值因resize()变化而不稳定,故k值大小相差较大)导致方差较大。故忽略方差,将Lambda代入泊松分布公式</p>
+<pre><code>((exp(-0.5) * pow(0.5, k) / factorial(k)))
+</code></pre><p>可得,链表大小有如上注解概率。</p>
+<p>之所以树化阈值选定8,一方面是因为红黑树在节点数量小时效率不一定高(可看HashMap中的TreeNode,占用了4个引用,1个布尔的内存空间,而链表节点则更低.)。另一方面是根据泊松分布计算出来,随机哈希码下,链表大小出现的概率。猜想是由这两方面和一些考量之后得出的结果。</p>
+<p>之所以退化阈值选定6,一方面是此阈值必须低于8,选定7的话,极端情况下(如一张链表的大小频繁的从8到7，7到8)导致频繁树化，影响性能</p>
+<h4 id="树化和退化的判断"><a href="#树化和退化的判断" class="headerlink" title="树化和退化的判断"></a>树化和退化的判断</h4><p>带着上面的理论知识我们来看HashMap是如何判断树化和退化的。</p>
+<p><strong>判断链表树化</strong></p>
+<pre><code>#树化
+//遍历链表,
+for (int binCount = 0; ; ++binCount) {
+    //已无下一个元素,直接在链表后面新增
+    if ((e = p.next) == null) {
+        p.next = newNode(hash, key, value, null);
+    //若链表长度超过阈值,树化.
+    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
+        treeifyBin(tab, hash);
+        break;
+    }
+    //找到相同元素,直接跳出循环,执行循环外的替换方法
+    if (e.hash == hash &amp;&amp; ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+        break;
+    p = e;
+}
+final void treeifyBin(Node&lt;K,V&gt;[] tab, int hash) {
+    int n, index; Node&lt;K,V&gt; e;
+    //当哈希表容量未达到一定大小时，考虑调整大小而非树化链表
+    if (tab == null || (n = tab.length) &lt; MIN_TREEIFY_CAPACITY)
+        resize();
+    else if ((e = tab[index = (n - 1) &amp; hash]) != null) {
+        TreeNode&lt;K,V&gt; hd = null, tl = null;
+        do {
+            TreeNode&lt;K,V&gt; p = replacementTreeNode(e, null);
+            if (tl == null)
+                hd = p;
+            else {
+                p.prev = tl;
+                tl.next = p;
+            }
+            tl = p;
+        } while ((e = e.next) != null);
+        if ((tab[index] = hd) != null)
+            hd.treeify(tab);
+    }
+}
+</code></pre><p><strong>判断红黑树退化</strong></p>
+<pre><code>#删除节点时的退化判断
+if (root == null                         #根节点为空,树大小为1,退化
+    || (movable                        
+        &amp;&amp; (root.right == null           #根节点无右子节点,树大小为2,退化
+            || (rl = root.left) == null
+            || rl.left == null))) {      #左子树无左子节点,树大小为3,退化
+    tab[index] = first.untreeify(map);  // too small
+            return;
+}
+#resize()方法中的退化判断
+if (loHead != null) {
+    //低位链表长度小于6,退化
+    if (lc &lt;= UNTREEIFY_THRESHOLD)
+        tab[index] = loHead.untreeify(map);
+    else {
+        tab[index] = loHead;
+        if (hiHead != null) // (else is already treeified)
+            loHead.treeify(tab);
+    }
+}
+</code></pre><p>由代码得知,HashMap内部主要通过UNTREEIFY_THRESHOLD和TREEIFY_THRESHOLD两个属性来判断为什么退化代码中有一个低位链表概念.当哈希表容量未达到一定数量时，考虑调整大小而非树化链表。</p>
+<h4 id="resize-方法中的高低位链表解析"><a href="#resize-方法中的高低位链表解析" class="headerlink" title="resize()方法中的高低位链表解析"></a>resize()方法中的高低位链表解析</h4><pre><code>final Node&lt;K,V&gt;[] resize() {
+    Node&lt;K,V&gt;[] oldTab = table;
+    int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    int oldThr = threshold;
+    int newCap, newThr = 0;
+    if (oldCap &gt; 0) {
+        //当前容量大于最大容量.直接返回
+        if (oldCap &gt;= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE;
+            return oldTab;
+        }
+        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr &lt;&lt; 1; // double threshold
+    }
+    //空HashMap,使用阈值初始化容量
+    else if (oldThr &gt; 0) // initial capacity was placed in threshold
+        newCap = oldThr;
+    //空HashMap,使用默认阈值初始化容量
+    else {               // zero initial threshold signifies using defaults
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    if (newThr == 0) {
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
+                  (int)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+    Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
+    table = newTab;
+    if (oldTab != null) {
+        //遍历旧的桶数组
+        for (int j = 0; j &lt; oldCap; ++j) {
+            Node&lt;K,V&gt; e;
+            if ((e = oldTab[j]) != null) {
+                oldTab[j] = null;
+                //当前桶为空,则新增桶
+                if (e.next == null)
+                    newTab[e.hash &amp; (newCap - 1)] = e;
+                //当前桶为红黑树,将红黑树分离
+                else if (e instanceof TreeNode)
+                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                //使用高低位链表来分离增大一倍后元素的去向。
+                else { // preserve order
+                    Node&lt;K,V&gt; loHead = null, loTail = null;
+                    Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                    Node&lt;K,V&gt; next;
+                    do {
+                        next = e.next;
+                        if ((e.hash &amp; oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        else {
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+</code></pre><h3 id="JAVA8-HashMap源码解析"><a href="#JAVA8-HashMap源码解析" class="headerlink" title="JAVA8 HashMap源码解析"></a>JAVA8 HashMap源码解析</h3><h4 id="1-改进的防止哈希碰撞机制的hash-方法"><a href="#1-改进的防止哈希碰撞机制的hash-方法" class="headerlink" title="1. 改进的防止哈希碰撞机制的hash()方法"></a>1. 改进的防止哈希碰撞机制的hash()方法</h4><p>JAVA8的hash方法比较简单,没有那么多的骚操作.</p>
+<p>根据<strong>注解</strong>:</p>
+<pre><code>计算key.hashCode() 并且将hashCode的高位异或到低位去。(因为表使用的是2的幂次方的掩码,仅在当前掩码以上位变化的HashCode将一直碰撞).所以我们应用了一个将高位比特变换到低位比特的转换。在位传递(Bit Spread)时有（速度，实用和质量）的trade off. 因为许多常见的散列集合已经合理的分布了，并且我们使用树来处理集合中大量的哈希碰撞，所以我们只是用最便宜的方式异或一些已经移动的Bits 来降低系统损耗,并且将高位加入运算中,否则高位永远不参与运算。
+</code></pre><p>注解有些冗长. 简单来说就是将 (哈希值) 去和 (哈希值无符号右移) 异或. </p>
+<p><strong>源码:</strong></p>
+<pre><code>static final int hash(Object key){
+    int h;
+    //使用哈希值 异或(^) 哈希值的高位. 
+    return (key == null) ? 0 : (h == key.hashCode()) ^ ( h &gt;&gt;&gt; 16);
+}
+#举例 如key的hashCode = 1101 0101
+则方法实际为 (1101 0101) ^ (0000 1101)
+</code></pre><p>如下图所示.</p>
+<p><img src="/images/HashMethod.jpg" alt="哈希方法"></p>
+<h4 id="2-插入方法"><a href="#2-插入方法" class="headerlink" title="2. 插入方法"></a>2. 插入方法</h4><p>此方法代码有点长,约40行.(putVal()方法,之所以使用putVal()来做真正的插入操作是因为,Map接口的put方法签名无法满足HashMap中的需求.)</p>
+<p>由注解我们得知,JDK1.8之后,HashMap的实现由(数组+链表)变成了(数组+链表/红黑树).其机制是当链表达到一定长度时树化,而红黑树节点少于一定数量时退化到链表。</p>
+<h4 id="1-hash-方法"><a href="#1-hash-方法" class="headerlink" title="1. hash()方法"></a>1. hash()方法</h4><h4 id="2-put-方法"><a href="#2-put-方法" class="headerlink" title="2. put()方法"></a>2. put()方法</h4><p>源代码:</p>
+<pre><code>final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
+    Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int n, i;
+    //空表，则初始化
+    if ((tab = table) == null || (n = tab.length) == 0){
+        n = (tab = resize()).length;
+    }
+    //若找到了该桶，但是第一个元素，则直接插入新节点
+    if ((p = tab[i = (n - 1) &amp; hash]) == null){
+        tab[i] = newNode(hash, key, value, null);
+    }else {
+        Node&lt;K,V&gt; e; K k;
+        //若当前节点是否就是需要填入的key,是则覆盖.
+        if (p.hash == hash &amp;&amp; ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))
+            e = p;
+        //若当前节点为树节点,则执行树节点的插入操作    
+        else if (p instanceof TreeNode)
+            e = ((TreeNode&lt;K,V&gt;)p).putTreeVal(this, tab, hash, key, value);
+        //否则为链表
+        else {
+            //在链表中找
+            for (int binCount = 0; ; ++binCount) {
+                //在map中没找到该key
+                if ((e = p.next) == null) {
+                    //插入节点
+                    p.next = newNode(hash, key, value, null);
+                    //若当前链表节点个数超过变树阈值.则将
+                    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                        treeifyBin(tab, hash);
+                    break;
+                }
+                //若已存在,则覆盖.
+                if (e.hash == hash &amp;&amp;
+                    ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))
+                    break;
+                p = e;
+            }
+        }
+        if (e != null) { // existing mapping for key
+            V oldValue = e.value;
+            if (!onlyIfAbsent || oldValue == null)
+                e.value = value;
+            afterNodeAccess(e);
+            return oldValue;
+        }
+    }
+    ++modCount;
+    if (++size &gt; threshold)
+        resize();
+    afterNodeInsertion(evict);
+    return null;
+}
+</code></pre><h4 id="3-resize-扩容"><a href="#3-resize-扩容" class="headerlink" title="3. resize(); 扩容"></a>3. resize(); 扩容</h4><p>源代码:</p>
+<pre><code>final Node&lt;K,V&gt;[] resize() {
+    Node&lt;K,V&gt;[] oldTab = table;
+    int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    int oldThr = threshold;
+    int newCap, newThr = 0;
+    if (oldCap &gt; 0) {
+        if (oldCap &gt;= MAXIMUM_CAPACITY) {
+            threshold = Integer.MAX_VALUE;
+            return oldTab;
+        }
+        else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp;
+                 oldCap &gt;= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr &lt;&lt; 1; // double threshold
+    }
+    else if (oldThr &gt; 0) // initial capacity was placed in threshold
+        newCap = oldThr;
+    else {               // zero initial threshold signifies using defaults
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    if (newThr == 0) {
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float)MAXIMUM_CAPACITY ?
+                  (int)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    @SuppressWarnings({&quot;rawtypes&quot;,&quot;unchecked&quot;})
+    Node&lt;K,V&gt;[] newTab = (Node&lt;K,V&gt;[])new Node[newCap];
+    table = newTab;
+    if (oldTab != null) {
+        for (int j = 0; j &lt; oldCap; ++j) {
+            Node&lt;K,V&gt; e;
+            if ((e = oldTab[j]) != null) {
+                oldTab[j] = null;
+                if (e.next == null)
+                    newTab[e.hash &amp; (newCap - 1)] = e;
+                else if (e instanceof TreeNode)
+                    ((TreeNode&lt;K,V&gt;)e).split(this, newTab, j, oldCap);
+                //保持链表顺序,但这样只是让并发时出现问题的概率变低，并非并发安全。
+                else {
+                    Node&lt;K,V&gt; loHead = null, loTail = null;
+                    Node&lt;K,V&gt; hiHead = null, hiTail = null;
+                    Node&lt;K,V&gt; next;
+                    //扩容(2的n次幂进一次幂)时,比特位数+1,则源hashCode和新的hashCode,在原位数上不变,在新增的位数上,不是1就是0,在这里将0变成loHead,1的变成hiHead，分为高低位链表.这种操作保持了源链表的顺序
+                    do {
+                        next = e.next;
+                        //最高那一位是否为0(决定进高位链表还是低位链表)
+                        if ((e.hash &amp; oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        else {
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+                    //将低位链表和高位链表分别赋值给新的数组(新的哈希桶)里面去
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+</code></pre>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/03/10/JAVA8-HashMap常量TREEIFY-THRESHOLD/" data-toggle="tooltip" data-placement="top" title="JAVA8-HashMap常量TREEIFY_THRESHOLD">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/03/09/JAVA7-HashMap源码解析/" data-toggle="tooltip" data-placement="top" title="JAVA7-HashMap源码解析">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#集合" title="集合">集合</a>
+                        
+                          <a class="tag" href="/tags/#源码" title="源码">源码</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

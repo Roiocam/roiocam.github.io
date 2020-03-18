@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          使用AOP进行MySQL切表 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2019/08/05/使用AOP进行MySQL切表/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                        
+                          <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+                        
+                          <a class="tag" href="/tags/#分表" title="分表">分表</a>
+                        
+                          <a class="tag" href="/tags/#AOP" title="AOP">AOP</a>
+                        
+                    </div>
+                    <h1>使用AOP进行MySQL切表</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2019-08-05
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="一-为什么需要切表"><a href="#一-为什么需要切表" class="headerlink" title="一. 为什么需要切表"></a>一. 为什么需要切表</h2><p>在实现这个功能是首先考虑的是，为什么我们需要进行分库分表。</p>
+<p>关系型数据库本身比较容易成为系统的瓶颈（再深入则为关系型数据库的读写一般都为对文件的I/O操作，而硬盘I/O是整个计算机系统中性能比较差的一个部分）。所以当查询维度较多，即使添加了从库，优化了索引，很多操作的性能仍然无法满足需求时，则需要对数据库进行切分。</p>
+<p>数据库分布式核心内容就是数据切分（Sharding），以及切分后对数据的定位，整合。依据切分类型，可分为垂直（纵向）切分和水平（横向）切分。<br><a id="more"></a></p>
+<h3 id="1-垂直切分"><a href="#1-垂直切分" class="headerlink" title="1. 垂直切分"></a>1. 垂直切分</h3><p>垂直切分常见垂直分库和垂直分表。</p>
+<p>(1) . 垂直分库依据业务耦合性，将关联度低的不同表存储在不同的数据库中。做法同大系统和多个小系统类似，按照业务分类进行独立划分。与“微服务治理”的做法类似。例如：</p>
+<p>主要数据库—-一个集群</p>
+<p>日志库—-一个集群</p>
+<p>报表库—-一个集群</p>
+<p>(2) . 垂直分表则是基于数据库中的“列”进行，某个表的字段过多，则可以新建一张扩展表，将不常使用的字段或者字段长度较大的字段拆分出去。例如：[用户基本信息表，用户详情表，用户地址表] 。通过“大表拆小表”避免了跨页问题（MySQL底层通过数据页存储，一条记录占用空间过大会导致跨页，造成额外的性能开销）。另外数据库以行为单位将数据加载到内存中，当字段长度较短时且访问频率高时，内存能加载更多数据，命中率更高，从而减少对磁盘的I/O。</p>
+<p><strong>优点:</strong></p>
+<ol>
+<li>解决业务层面耦合。</li>
+<li>微服务治理类似的分级管理，维护，监控和扩展。</li>
+<li>高并发下提高一定的性能优化</li>
+</ol>
+<p><strong>缺点:</strong></p>
+<ol>
+<li>部分表无法join，只能接口聚合，提高了开发难度</li>
+<li>分布式事务处理复杂</li>
+<li>依然存在单表过大问题</li>
+</ol>
+<h3 id="2-水平切分"><a href="#2-水平切分" class="headerlink" title="2. 水平切分"></a>2. 水平切分</h3><p>当一个应用无法以再细粒度的垂直切分，或者切分后的数据量行数巨大，存在单库读写，存储性能瓶颈，此时就需要水平切分。水平切分分为库内分表和分库分表，根据表内数据内在的逻辑关系，将同一个表按不同的条件分散到多个数据库或多个表中，每个表中只包含一部分数据，从而使得单个表的数据量变小，达到分布式的效果。</p>
+<p>如：日志数据库或者报表数据库（以时间为粒度）：</p>
+<ol>
+<li>以年份分库（log_2018,log_2019）</li>
+<li>以月份分表（log_2019.log_2019_01，log_2019.log_2019_02）</li>
+</ol>
+<p><strong>优点:</strong></p>
+<ol>
+<li>单库数据量保持在一定程度，高并发性能好，系统稳定性和负载能力强。</li>
+<li>应用端改造小，不需要拆分业务模块</li>
+</ol>
+<p><strong>缺点:</strong></p>
+<ol>
+<li>跨分片的事务一致性难以保证</li>
+<li>跨库的Join关联查询性能较差</li>
+<li>数据多次扩展难度和维护量极大</li>
+</ol>
+<h4 id="1-根据数值范围切分"><a href="#1-根据数值范围切分" class="headerlink" title="(1) . 根据数值范围切分"></a>(1) . 根据数值范围切分</h4><p>按照时间区间或者ID区间来切分：按日期将不同月甚至是日的数据分散到不同的库中；将userId为1~9999的记录分到第一个库，10000~20000的分到第二个库，以此类推。某种意义上，某些系统中使用的”冷热数据分离”，将一些使用较少的历史数据迁移到其他库中，业务功能上只提供热点数据的查询，也是类似的实践。</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>单表大小可控</li>
+<li>天然便于水平扩展，后期如果相对整个分片集群扩容时，只需要添加节点即可，无需迁移数据</li>
+<li>使用分片字段进行范围查找时，连续分片可以快速定位分片进行快速查询，避免了跨分片查询问题。</li>
+</ul>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>热点数据成为性能瓶颈。连续分片可能存在数据热点，如按时间反字段分片时，最近时间段的数据可能会被频繁访问。而历史数据可能很少被查询。</li>
+</ul>
+<h4 id="2-根据数据取模"><a href="#2-根据数据取模" class="headerlink" title="(2) . 根据数据取模"></a>(2) . 根据数据取模</h4><p>一般采用Hash取模Mod的切分方式，如：将Partner表根据partner_id 切分到4个库中，余数为0的放到第一个库中，余数为1的放到第二个库中，以此类推。这样同一个用户的数据会分散到同一个库中，如果查询条件带有partner_id，则可明确定位到相应库中查询。</p>
+<p><strong>优点:</strong></p>
+<ul>
+<li>数据分片相对均匀，不容易出现热点和并发访问的瓶颈。</li>
+</ul>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>后期分片集群扩容时，需要迁移旧的数据（使用一致性HASH算法则可以较好的避免这个问题）</li>
+<li>容易面临跨分片查询的复杂问题。如果频繁使用了不带partner_id的查询条件，则无法定位数据库，从而向4个分片数据库发起查询，再在内存中合并数据，取最小集返回给应用，分库反而成为瓶颈。</li>
+</ul>
+<h3 id="3-引发的各种问题"><a href="#3-引发的各种问题" class="headerlink" title="3. 引发的各种问题"></a>3. 引发的各种问题</h3><p>数据切分有可能会引发各种事物一致性等问题，在这里不做过多赘述，只是为了记录在代码层面上如何优化水平切分业务。</p>
+<h2 id="二-使用AOP对相关业务表进行水平切分"><a href="#二-使用AOP对相关业务表进行水平切分" class="headerlink" title="二. 使用AOP对相关业务表进行水平切分"></a>二. 使用AOP对相关业务表进行水平切分</h2><p>上面提到了一个水平切分，在这里用实际案例：将报表以时间为维度切分为多表。</p>
+<p>在我实际操作时，遇到了Aspect不生效的问题，google了很久之后莫名其妙解决了，至今未发现问题在哪里。</p>
+<h3 id="1-引入依赖"><a href="#1-引入依赖" class="headerlink" title="1. 引入依赖"></a>1. 引入依赖</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>由于Spring的属性[ <em>spring.aop.auto=true</em> ] 默认开启为true，也就是引入依赖后默认开启AOP。所以无须做过多Config操作</p>
+<h3 id="2-编写-注解"><a href="#2-编写-注解" class="headerlink" title="2. 编写@注解"></a>2. 编写@注解</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*  声明一个以注解，在需要进行分表的方法中进行AOP切面</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* /</span></span><br><span class="line"><span class="comment"><span class="doctag">@Documented</span></span></span><br><span class="line"><span class="comment"><span class="doctag">@Target</span>(ElementType.METHOD)</span></span><br><span class="line"><span class="comment"><span class="doctag">@Retention</span>(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="comment">public <span class="doctag">@interface</span> TimeSpiltTable &#123;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-编写Aspect"><a href="#3-编写Aspect" class="headerlink" title="3. 编写Aspect"></a>3. 编写Aspect</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 带时间切分表的AOP，格式为&#123;##_yyyy_MM&#125;. </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeSpiltAspect</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 定义注解声明的方法，并进行切入</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"@annotation(com.exmaple.aop.annotation.TimeSpiltTable)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"pointcut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">concatTimeToTableName</span><span class="params">(JoinPoint joinPoint)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//获取参数数组</span></span><br><span class="line">        Object[] args = joinPoint.getArgs();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (Object parameter : args) &#123;</span><br><span class="line">                <span class="comment">//若为Map</span></span><br><span class="line">                <span class="keyword">if</span> (parameter <span class="keyword">instanceof</span> Map) &#123;</span><br><span class="line">                    Map&lt;String, Object&gt; map = (Map&lt;String, Object&gt;) parameter;</span><br><span class="line">                    <span class="comment">//这里是业务代码，获取传入的参数Map中的表名，然后再获取当前时间，转换为&#123;yyyy_MM&#125;格式，再拼接表名。</span></span><br><span class="line">                    <span class="comment">//重新赋值</span></span><br><span class="line">                    map.put(Constants.DB_TABLE_NAME_PARAM, tableName);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.info(<span class="string">"concatTimeToTableName Exception,exception=&#123;&#125;, args=&#123;&#125; ,"</span>, e.getMessage(), JSON.toJSON(args));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一部分的代码为什么这样做，因为本项目使用的是MyBatis，我们进行了大量的分库分表，所以需要用MyBatis拼接SQL来进行定位不同的数据库和数据表。为了方便传入MyBatis，Mapper使用的参数统一为Map&lt;String,Object&gt;。所以在这里其实是对Mapper进行了AOP，并将Mapper方法的参数中的表名获取，再拼接成为分表的SQL。  </p>
+<p>为什么使用AOP去做这件事呢，因为这个表和这个业务原本就已经存在，只是在系统发展过程中，单表不满足性能需求，则进行了切分，使用AOP来做这一件事，第一是高效，这些代码编写不过几分钟。第二是不影响原本的代码，直接进行了扩展而已。</p>
+<p>不过这种AOP做法也会有缺陷（无考证）：就是在AOP不生效时，将会查询到没有分表后的原表名，可能导致程序错误，此时排查定位对维护的人有一定的难度。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/08/08/消息通知服务笔记/" data-toggle="tooltip" data-placement="top" title="消息通知业务笔记">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/08/04/记一次为 Spring Boot 提交Bug/" data-toggle="tooltip" data-placement="top" title="记一次为 Spring Boot 提交Bug">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                        
+                          <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+                        
+                          <a class="tag" href="/tags/#分表" title="分表">分表</a>
+                        
+                          <a class="tag" href="/tags/#AOP" title="AOP">AOP</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          SEDA笔记 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2019/08/21/SEDA笔记/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#I/O" title="I/O">I/O</a>
+                        
+                          <a class="tag" href="/tags/#并发" title="并发">并发</a>
+                        
+                          <a class="tag" href="/tags/#线程模型" title="线程模型">线程模型</a>
+                        
+                    </div>
+                    <h1>SEDA笔记</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2019-08-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>SEDA是分阶段事件驱动架构的首字母缩写，它将复杂的事件驱动应用程序分解为阶段网络，阶段之间依靠队列连接，应用程序设计者只负责每个阶段的服务逻辑和阶段之间的连接逻辑，而由各个阶段自身负责资源的管理和负载的适应功能。此设计避免了与基于线程的并发模型相关的高开销，并将事件和线程调度与应用逻辑分离，使系统对负载变化的良好适应性以及良好的系统缩放性，达到高并发，高效率。<br><a id="more"></a><br> 通过对每个事件队列执行准入控制，可以很好地加载服务以加载，从而防止当需求超过服务容量时资源过度使用。 SEDA采用动态控制来自动调整运行时参数（例如每个阶段的调度参数），以及管理负载，例如，通过执行自适应减载。 将服务分解为一组阶段还可以实现模块化和代码重用，以及为复杂事件驱动的应用程序开发调试工具。</p>
+<h4 id="值得关注的问题"><a href="#值得关注的问题" class="headerlink" title="值得关注的问题"></a>值得关注的问题</h4><ol>
+<li><strong>如何合理地进行资源初始化分配</strong>：如果未能进行合理地线程以及队列资源分配，导致出现资源需求较大的阶段被分配了数量不足的线程数，或者资源需求较小的 阶段被分配了数量过多的线程数，则会造成系统吞吐量的下滑，甚至会导致系统性能在高并发下远低于多线程模型系统。</li>
+<li><p><strong>如何合理地对系统进行阶段划分</strong>：不合理的阶段划分将导致系统性能下滑。</p>
+<h2 id="两种常用的互联网服务器模型"><a href="#两种常用的互联网服务器模型" class="headerlink" title="两种常用的互联网服务器模型"></a>两种常用的互联网服务器模型</h2><h3 id="1-多线程编程模型"><a href="#1-多线程编程模型" class="headerlink" title="1. 多线程编程模型"></a>1. 多线程编程模型</h3><p>最简单最普遍的服务器编程模型，如Servlet就是采用这种编程模式，如下图：</p>
+</li>
+</ol>
+<p><img src="&#39;/home/roiocam/下载/d6eaf708-d46e-385c-a689-fae7aed0df8a.png&#39;" alt></p>
+<p>该模型针对每一个请求，都会创建分配一个线程，这个线程负责这个请求的处理。</p>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><pre><code>执行粒度是一个完整的处理流程，处理逻辑清晰，容易开发。
+</code></pre><h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><pre><code>如果处理过程中某一步骤的处理时间过长（网络调用，磁盘I/O读写），则会阻塞后续请求，造成资源浪费。并且随着处理请求的不断增加，导致并发执行的线程数量太多。过多的线程数量导致系统在线程调度和资源抢占上的开销过大。
+</code></pre><h3 id="2-事件驱动模型"><a href="#2-事件驱动模型" class="headerlink" title="2. 事件驱动模型"></a>2. 事件驱动模型</h3><p><img src="/home/roiocam/下载/404cceaf-637b-3bae-827c-da37b1266795.png" alt></p>
+<p>事件驱动模型的思想是：将处理流程分割成多个步骤，每个步骤都实现为一个有限状态机（FSM）所有的处理请求会作为事件进入系统，由调度器负责传递给相应的状态机，<br>状态机的处理结果也以事件的形式传给调度器，新的时间再次被调度器转发给下一个状态机进行处理，直至处理完成。</p>
+<h4 id="优点：-1"><a href="#优点：-1" class="headerlink" title="优点："></a>优点：</h4><pre><code>将各个步骤独立实现，方便进行系统监测和调整。
+</code></pre><h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4><pre><code>调度程序的设计和实现过于复杂，针对不同的应用和系统的逻辑变更需要不同的实现，导致采用这一模型构建出来的系统十分庞大和难以控制。
+</code></pre><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>综上所述，主流的多线程编程模型和事件驱动模型虽然都各有优势，但同时也有不可避免的缺陷，并不是适合在高并发的成熟系统下作为编程模式。</p>
+<h2 id="阶段性时间驱动模型"><a href="#阶段性时间驱动模型" class="headerlink" title="阶段性时间驱动模型"></a>阶段性时间驱动模型</h2><p>针对上述主流并发架构的缺陷，汲取多线程和事件驱动模型的优点，最大程序规避两者缺点，SEDA应运而生。SEDA整合了多线程和时间驱动服务器模式的优势，它可以高效地管理和控制服务器资源，良好的适应高并发环境。</p>
+<p>应用程序服务器之请求处理步骤通常是复杂的，基于事件驱动处理的有穷状态机（FSM）所以实现服务器程序过程就类似用程序实现有穷状态机过程。</p>
+<p><img src="/home/roiocam/下载/5b044562-72b2-3367-8347-8a989d26ce31.png" alt="SEDA模型HTTP服务器有穷机状态图"></p>
+<p>SEDA架构能对有穷状态机进行分析，然后将相关关状态聚集在同一Stage中，Stage间采用队列的方式来进行通信。每一个Stage皆完全独立，均拥有自己的线程池，以及为了专门处理到达这一步骤所必须进行的工作。所有的Stage均通过自身事件队列连接在一起，构成完整的请求处理网络。性能控制器和动态线程池依请求的繁忙程度动态来调整线程池的大小，以达到系统资源的最有分配。每一个Stage由下述四部分组成：</p>
+<ol>
+<li>事件队列：用以维持Stage间通信</li>
+<li>事件处理器：用以执行请求到这一个Stage中所应执行的工作</li>
+<li>线程池：用以提供事件处理器且可以并发执行事件之环境</li>
+<li>性能控制器：用以对该Stage资源（线程数，队列长度等）进行调整</li>
+</ol>
+<p>通过这四部分的协作配合，每一个Stage都可以很好地运行，并且可以控制资源的使用。已经过Stage处理完，若没有后续工作，即可以回收线程池中的线程，来供给其他Stage使用。Stage结构如下图所示。</p>
+<p><img src="/home/roiocam/下载/26b334c8-413c-3f7a-bb95-756b0be9b2c1.png" alt="Stage结构图"></p>
+<p>在SEDA架构中，基本的处理单元称为阶段（Stage），一个阶段由事件队列、动态线程池、事件处理器和一个性能控制器四个组件构成。SEDA将一个请求的处理过程分解为一系列的阶段，阶段之间通过事件队列联系，开发人员只负责每个阶段的服务逻辑以及阶段间的连接逻辑，而由各个阶段自身负责资源管理以及负载适应功能。使用这种解耦拆分可以使系统达到高并发性、对负载变化的良好适应性以及高度的可缩放性。</p>
+<h2 id="自实现SEDA异步框架"><a href="#自实现SEDA异步框架" class="headerlink" title="自实现SEDA异步框架"></a>自实现SEDA异步框架</h2><h3 id="一-Stage结构"><a href="#一-Stage结构" class="headerlink" title="(一). Stage结构"></a>(一). Stage结构</h3><p><img src="/home/roiocam/下载/cc7bf301-17d9-3789-a55b-9a0237bf24ae.png" alt="Stage结构图"></p>
+<p>在这个框架中，一个Stage的组件有：</p>
+<ol>
+<li>D-MQ ：消息中间件。用作消息队列，传递消息。</li>
+<li>Local-Queue：本地队列，一般是BlockingQueue，用以辅助实现Stage内的动态线程池。采用LocalQueue的目的是避免数据在mq中堆积导致mq性能下降。</li>
+<li>ThreadPool：动态线程池，进行事件并发处理。</li>
+<li>Worker：事件的具体处理器</li>
+<li>StageController：State的性能控制器。用以对Stage的队列，资源，调度策略进行控制。</li>
+</ol>
+<h3 id="二-SEDA框架使用场景"><a href="#二-SEDA框架使用场景" class="headerlink" title="(二). SEDA框架使用场景"></a>(二). SEDA框架使用场景</h3><ol>
+<li>系统资源监控(CPU，内存，线程池，队列)</li>
+<li>外围服务交互情况（API调用，上游服务交互，请求方）监控</li>
+<li>系统报警（服务异常，接口压力过大）</li>
+<li>基于日志和事件的数据挖掘（规则挖掘）</li>
+<li>重要业务数据切片存储（里程碑消息，核心服务交互数据）</li>
+<li>异步触发的操作（表A写完后异步写表B）</li>
+</ol>
+<p>如下图：<br><img src="/home/roiocam/下载/c1d61248-a579-34cb-8b5d-709be517979a.png" alt></p>
+<h3 id="三-SEDA总体架构"><a href="#三-SEDA总体架构" class="headerlink" title="(三). SEDA总体架构"></a>(三). SEDA总体架构</h3><p><img src="/home/roiocam/下载/b3182b33-b591-301d-8060-b7d9a78b389b.png" alt></p>
+<h3 id="四-异步框架原生态结构-Virtual-Bundle"><a href="#四-异步框架原生态结构-Virtual-Bundle" class="headerlink" title="(四). 异步框架原生态结构(Virtual Bundle)"></a>(四). 异步框架原生态结构(Virtual Bundle)</h3><p><img src="/home/roiocam/下载/9a414b8f-e0e7-30a7-acfa-7538ab874474.png" alt></p>
+<p>异步框架在无任何扩展时，其主要组件如下：</p>
+<ol>
+<li>bundle：消息中心的核心组件。由读，处理，写三部分组成。同时整合开关，定时器，动态线程池等元素来支持多样化的输入和需求。bundle可以从多种数据源获取数据，并进行数据处理。<ul>
+<li>开关：用以决定该bundle是否被激活。如未被激活，则该bundle将停止读取数据，同时不会在其他服务上产生该bundle对应的数据（比如在mq上生成该bundle的队列、连接、交换机等。）</li>
+<li>定时器：用以指定该bundle是否定时运行。如未指定，则实时运行</li>
+<li>动态线程池：用以支持bundle以同步/异步方式调用。如未指定，则同步运行。</li>
+</ul>
+</li>
+<li>Bundle Decider：用以对bundle的关键指标进行决策（是否激活，时效性，同步类型），并同时提供健康检查。</li>
+<li>Work Carrier：处理数据的最小单元。</li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2019/08/23/Quartz任务调度笔记/" data-toggle="tooltip" data-placement="top" title="Quartz任务调度笔记">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2019/08/08/消息通知服务笔记/" data-toggle="tooltip" data-placement="top" title="消息通知业务笔记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#I/O" title="I/O">I/O</a>
+                        
+                          <a class="tag" href="/tags/#并发" title="并发">并发</a>
+                        
+                          <a class="tag" href="/tags/#线程模型" title="线程模型">线程模型</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
