@@ -29,10 +29,8 @@
     <link rel="stylesheet" href="/css/highlight.css">
 
     <!-- Custom Fonts -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- Hux change font-awesome CDN to qiniu -->
-    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="/css/font-noto-serif-sc.css">
+    <link rel="stylesheet" href="/css/font-source-serif-pro.css">
 
     <!-- Hux Delete, sad but pending in China
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -193,8 +191,15 @@
 <p>由此,选定 6 的原因一部分是需要低于 8，但过于接近也会导致频繁的结构变化。</p>
 <p>那为什么不是 6 以下呢？我也是这么想得.查看 TreeNode 和 Node 的源码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//树节点</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">LinkedHashMap</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    TreeNode&lt;K,V&gt; parent;  <span class="comment">// red-black tree links</span></span><br><span class="line">    TreeNode&lt;K,V&gt; left;</span><br><span class="line">    TreeNode&lt;K,V&gt; right;</span><br><span class="line">    TreeNode&lt;K,V&gt; prev;<span class="comment">// needed to unlink next upon deletion</span></span><br><span class="line">    <span class="keyword">boolean</span> red;</span><br><span class="line">    <span class="comment">//链表节点</span></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> hash;</span><br><span class="line">    <span class="keyword">final</span> K key;</span><br><span class="line">    V value;</span><br><span class="line">    Node&lt;K,V&gt; next;</span><br></pre></td></tr></table></figure>
-<p>由源码可知,TreeNode 光是属性数就多于 Node, 再看Oracle 文档 中变量的初始值,引用类型初始为 NULL.引用类型内存占用为 32 位系统 4 字节,64 位系统 8 字节.</p>
+<p>由源码可知,TreeNode 光是属性数就多于 Node, 再看Oracle 文档 中变量的初始值,引用类型初始为 NULL.引用类型的内存占用为 32 位系统 4 字节,64 位系统 8 字节.(但由于JVM的压缩OOP机制,64位系统上主要也是4字节.详情见最后)假定需要兼容ILP32系统和LP64系统,d</p>
 <p>故,不选定低于 6 的退化阈值一方面是因为红黑树不一定在低元素时效率更好（事实上由 MIN_TREEIFY_CAPACITY=64 参数，只有容量大于 64 时才会开启树化），另一方面则是红黑树相比链表占用了更多的引用。</p>
+<h1 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h1><p>本节是对JVM Compressed oops 的扩展阅读.</p>
+<p><strong>OOP(普通对象指针)</strong> 是指向对象的托管指针。通常其大小与本机指针大小相同，于是在LP64系统上为64位(8 bytes)，在ILP32系统上为32位(4 bytes)。</p>
+<p>在ILP32系统上，最大堆大小由于32位系统指针最多只能指向2^32的内存地址(也就是4GB)，从而小于4GB，对一些程序来说内存未必足够。</p>
+<p>但在LP64系统上，相同程序使用的堆大小可能要比在ILP32系统上运行时大1.5倍左右，该原因是<br>由于托管指针(OOPS)的大小扩展(从4 bytes 到 8 bytes)造成的.(JVM的内存管理中的对齐填充,OOPS需要被填充为8的倍数)</p>
+<p>Compressed oops 将托管指针在64位系统中表示表示为32位,使得使用了相对于64位Java堆基地址的32位对象偏移量。因为这些托管指针是对象偏移量而不是字节偏移量，所以它们可以用来多达40亿个对象或者堆大小最多约32GB。要使用它们，必须将它们缩放8倍，并添加到Java堆基址中以找到它们所引用的对象。</p>
+<p>使用Compressed oops的对象大小与ILP32模式下的对象大小相当。</p>
+<p>由于JVM(如Hotspot VM)的自动内存管理系统要求对象起始地址必须是8字节的整数倍.</p>
 
 
                 <hr>

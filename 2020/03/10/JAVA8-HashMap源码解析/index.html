@@ -29,10 +29,8 @@
     <link rel="stylesheet" href="/css/highlight.css">
 
     <!-- Custom Fonts -->
-    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
-    <!-- Hux change font-awesome CDN to qiniu -->
-    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="/css/font-noto-serif-sc.css">
+    <link rel="stylesheet" href="/css/font-source-serif-pro.css">
 
     <!-- Hux Delete, sad but pending in China
     <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -197,38 +195,8 @@
 <li>普通情况下为桶结构的哈希表,当链表过长时将链表树化为红黑树</li>
 <li>链表长度为8时树化(TREEIFY_THRESHOLD)，树节点小于6时(UNTREEIFY_THRESHOLD)退化。</li>
 </ol>
-<p><strong>TREEIFY_THRESHOLD</strong>和<strong>UNTREEIFY_THRESHOLD</strong>是JAVA8的HashMap新增的两个常量,<strong>DEFAULT_INITIAL_CAPACITY</strong>必须为2的n次幂我们已经知道,是基于indexFor方法和位运算的一些性质决定,而<strong>TREEIFY_THRESHOLD</strong>为什么如此呢?我们也要搞清楚.</p>
-<h4 id="TREEIFY-THRESHOLD-和-UNTREEIFY-THRESHOLD"><a href="#TREEIFY-THRESHOLD-和-UNTREEIFY-THRESHOLD" class="headerlink" title="TREEIFY_THRESHOLD 和 UNTREEIFY_THRESHOLD"></a>TREEIFY_THRESHOLD 和 UNTREEIFY_THRESHOLD</h4><p>首先我们先看类注解中有没有提示.</p>
-<pre><code>* Because TreeNodes are about twice the size of regular nodes, we
-* use them only when bins contain enough nodes to warrant use
-* (see TREEIFY_THRESHOLD). And when they become too small (due to
-* removal or resizing) they are converted back to plain bins.  In
-* usages with well-distributed user hashCodes, tree bins are
-* rarely used.  Ideally, under random hashCodes, the frequency of
-* nodes in bins follows a Poisson distribution
-* (http://en.wikipedia.org/wiki/Poisson_distribution) with a
-* parameter of about 0.5 on average for the default resizing
-* threshold of 0.75, although with a large variance because of
-* resizing granularity. Ignoring variance, the expected
-* occurrences of list size k are (exp(-0.5) * pow(0.5, k) /
-* factorial(k)). The first values are:
-*
-* 0:    0.60653066
-* 1:    0.30326533
-* 2:    0.07581633
-* 3:    0.01263606
-* 4:    0.00157952
-* 5:    0.00015795
-* 6:    0.00001316
-* 7:    0.00000094
-* 8:    0.00000006
-* more: less than 1 in ten million
-</code></pre><p>注解中写到（理想情况下，在随机哈希码和默认大小调整阈值为0.75的情况下,存储桶中元素个数出现的频率遵循泊松分布）并且注解给了Lambda平均约为0.5的估算值.(Lambda为单位时间内随机事件的平均发生率,可用统计学的最大似然估计来计算得出).</p>
-<p>并且注解指出,由于大小调整粒度(在HashMap中为容量*负载因子,大于此值则重新调整存储桶的个数,故k值因resize()变化而不稳定,故k值大小相差较大)导致方差较大。故忽略方差,将Lambda代入泊松分布公式</p>
-<pre><code>((exp(-0.5) * pow(0.5, k) / factorial(k)))
-</code></pre><p>可得,链表大小有如上注解概率。</p>
-<p>之所以树化阈值选定8,一方面是因为红黑树在节点数量小时效率不一定高(可看HashMap中的TreeNode,占用了4个引用,1个布尔的内存空间,而链表节点则更低.)。另一方面是根据泊松分布计算出来,随机哈希码下,链表大小出现的概率。猜想是由这两方面和一些考量之后得出的结果。</p>
-<p>之所以退化阈值选定6,一方面是此阈值必须低于8,选定7的话,极端情况下(如一张链表的大小频繁的从8到7，7到8)导致频繁树化，影响性能</p>
+<p><strong>TREEIFY_THRESHOLD</strong>和<strong>UNTREEIFY_THRESHOLD</strong>是JAVA8的HashMap新增的两个常量,<strong>DEFAULT_INITIAL_CAPACITY</strong>必须为2的n次幂我们已经知道,是基于indexFor方法和位运算的一些性质决定,而<strong>TREEIFY_THRESHOLD</strong>为什么如此呢?</p>
+<p>具体的展开需要见我的下一篇文章.这里只是简单的提一下. 主要是</p>
 <h4 id="树化和退化的判断"><a href="#树化和退化的判断" class="headerlink" title="树化和退化的判断"></a>树化和退化的判断</h4><p>带着上面的理论知识我们来看HashMap是如何判断树化和退化的。</p>
 <p><strong>判断链表树化</strong></p>
 <pre><code>#树化
