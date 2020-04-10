@@ -17,7 +17,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://ilove33.cn/page/2/">
+    <link rel="canonical" href="http://ilove33.cn/page/4/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -166,248 +166,22 @@
 
 <div class="post-preview">
 
-    <a href="/2019/08/30/构建高性能应用服务器所需要知道的内容/">
+    <a href="/2019/05/29/涉及分布式及高并发笔记/">
         <h2 class="post-title">
-            构建高性能应用服务器所需要知道的内容
+            涉及分布式及高并发笔记
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            本文节选翻译自teskalabs的博客.作者为Ales Teska.
-本文主要介绍了构建高性能应用服务器所涉及的一些模型架构等知识。
-
-构建应用程序服务器并非易事。 它需要深入了解各种组件，如网络或OS内核。 我花了几年时间在软件工程的迷人领域：高性能应用服务器，如HTTP服务器，SSL终端，API网关，最新的软件定义网络（SDN）或网络功能虚拟化（NFV）工具。
-这篇文章详细阐述了我在这次......
+            分布式系统/集群简介对于分布式系统/集群，主要是一个问题就是需要解决数据一致性、以及分布式系统/集群本身的业务特点，数据备份容灾以及对解决高并发性能。
+特点1.发布与订阅涉及到分布式/集群的系统，集群中每个主节点都会有多个备份节点，主节点与备份节点之间的数据同步复制，大部分采用了发布与订阅的模式，如Kafka的Pull和Push，如ZooKeeper的配置中心。
+发布/订阅系统的Push模式......
         </div>
     </a>
     <p class="post-meta">
         Posted by Andy Chen on
-        2019-08-30
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/30/适用于Manjaro-Kde的Tim解决方案/">
-        <h2 class="post-title">
-            适用于Manjaro Kde的Tim解决方案
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            概述最近由于无法忍受 Windwos 系统的渣渣性能,非 Unix 系统的局限,以及过时的UI.于是将主力开发机从 Windows 10 迁移到 Manjaro Linux 上，使用了 Kde 作为桌面环境。
-到目前为止, 大多数开发软件都工作良好。
-其他相关docx等,使用率较低.但也未有无法工作的情况.唯独Deepin-TIM在Windows下表现差劲.
-ps : 文章写的枯燥冗长，主要......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-30
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/29/CS-APP笔记-信息的表示和处理/">
-        <h2 class="post-title">
-            CS:APP笔记:信息的表示和处理
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            现在计算机存储和处理的信息以二值信号表示（二进制），也称为位(bit)。当把位组合在一起，加上某种解释，即赋予不同的可能位模式以含意，我们就能表示任何有限集合的元素。
-三种最重要的数学表示：
-
-无符号编码基于传统的二进制表示法，表示大于或等于0的数字。
-补码编码是表示有符号整数的最常见的方式。可以为正数和负数。
-浮点数编码是表示实数的科学记数法的以2为基数的版本。
-
-计算机的表示法是用有限数......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-29
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/28/CS-APP笔记-前言_计算机系统概括/">
-        <h2 class="post-title">
-            CS:APP笔记:计算机系统概括
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            课程大纲一.程序和数据二.内存的层次结构三.异常控制流四.虚拟内存五.网络和并发
-一.C程序被编译的过程编译为可执行文件:root&gt; gcc -o hello hello.c    此时可通过root&gt; ./hello 执行hello程序上面的过程可分解为:
-
-hello.c(文本,源代码)  –&gt;被预处理(cpp):读取头文件并插入到程序文本
-hello.i(修改后的文本......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-28
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/28/CS-APP笔记-系统I-O/">
-        <h2 class="post-title">
-            CS:APP笔记:系统I/O
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            一.三种I/O
-UNIX I/O （低级I/O）
-本书编写的RIO I/O（设计用于网络连接） 
-UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
-
-带缓冲的I/O和 RIO I/O难以共存，因为他们维护了个自己的缓冲区，会互相干扰
-1.UNIX I/O优点:
-
-最常见和最低开销。（其他I/O包都是基于UNIX I/O实现）
-提供访问文件元数据的函数
-函数是异步信号安全的，可以......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-28
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/27/杂乱的笔记/">
-        <h2 class="post-title">
-            杂乱的笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Linux
-一切都是文件。在Linux中，诸如键盘，显示器等设备，Socket等都被设计为文件。这样的好处是对于程序员来说，一切的操作都将原子化（读，写）
-五种I/O模型(阻塞IO，非阻塞IO，IO多路复用，信号驱动IO，异步IO)。在Linux Network I/O中，涉及两个系统对象（调用程序和系统内核）
-阻塞I/O（读操作：内核开始准备数据，阻塞等待数据；用户进程阻塞，等待内核数据。......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-27
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/23/Quartz任务调度笔记/">
-        <h2 class="post-title">
-            Quartz任务调度笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            强大的开源任务调度框架:Quartz
-体系架构三大核心：调度器，触发器，任务
-1). 任务(Job)a.JobJob接口表示一个任务，要执行的具体内容，此接口只有一个execute方法用于执行任务逻辑。创建任务则必须实现该接口。Job类似Runnable接口1234567public class CleanMySQL implements Job&#123;    @Override    ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-23
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/21/SEDA笔记/">
-        <h2 class="post-title">
-            SEDA笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            简介SEDA是分阶段事件驱动架构的首字母缩写，它将复杂的事件驱动应用程序分解为阶段网络，阶段之间依靠队列连接，应用程序设计者只负责每个阶段的服务逻辑和阶段之间的连接逻辑，而由各个阶段自身负责资源的管理和负载的适应功能。此设计避免了与基于线程的并发模型相关的高开销，并将事件和线程调度与应用逻辑分离，使系统对负载变化的良好适应性以及良好的系统缩放性，达到高并发，高效率。 通过对每个事件队列执行准......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-21
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/08/消息通知服务笔记/">
-        <h2 class="post-title">
-            消息通知业务笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言在负责Ad Exchange竞价成功的消息通知服务时，由于该服务需要消费一定量级的 Kafka 数据，并且保证服务不宕机，友好处理异常，并且异步并发请求的性能需要足够强劲。途中遇到许多之前没有学习的新思路新知识，在此记录
-需求消费 Kafka 中 竞价成功消息通知回调 Topic 中的回调URL，并异步HTTP请求回调。
-Kafka 分区数量 : 30
-
-实现1.分析阶段由需求得知，需要......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-08
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/05/使用AOP进行MySQL切表/">
-        <h2 class="post-title">
-            使用AOP进行MySQL切表
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            一. 为什么需要切表在实现这个功能是首先考虑的是，为什么我们需要进行分库分表。
-关系型数据库本身比较容易成为系统的瓶颈（再深入则为关系型数据库的读写一般都为对文件的I/O操作，而硬盘I/O是整个计算机系统中性能比较差的一个部分）。所以当查询维度较多，即使添加了从库，优化了索引，很多操作的性能仍然无法满足需求时，则需要对数据库进行切分。
-数据库分布式核心内容就是数据切分（Sharding），以......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-05
+        2019-05-29
     </p>
 
 </div>
@@ -420,13 +194,9 @@ Kafka 分区数量 : 30
 <ul class="pager">
     
         <li class="previous">
-            <a href="/">&larr; Newer Posts</a>
+            <a href="/page/3/">&larr; Newer Posts</a>
         </li>
     
-    
-        <li class="next">
-            <a href="/page/3/">Older Posts &rarr;</a>
-        </li>
     
 </ul>
 
@@ -518,11 +288,11 @@ Kafka 分区数量 : 30
                             
                         
                             
+                        
+                            
+                        
+                            
                             <a href="/tags/#探索" title="探索" rel="3">探索</a>
-                            
-                        
-                            
-                        
                             
                         
                             
