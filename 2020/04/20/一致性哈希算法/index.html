@@ -13,11 +13,11 @@
 
     <title>
         
-          About - Roiocam的博客 | Roiocam&#39;s Blog
+          一致性哈希算法 - Roiocam的博客 | Roiocam&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://ilove33.cn/about/">
+    <link rel="canonical" href="http://ilove33.cn/2020/04/20/一致性哈希算法/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -129,298 +129,111 @@
 
 
     <!-- Main Content -->
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/images/about-bg.jpg')">
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading"> </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#并发" title="并发">并发</a>
+                        
+                          <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
+                        
+                          <a class="tag" href="/tags/#一致性" title="一致性">一致性</a>
+                        
+                    </div>
+                    <h1>一致性哈希算法</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2020-04-20
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
-
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <blockquote>
-<p>“你的时间有限，所以不要为别人而活。不要被教条所限，不要活在别人的观念里。不要让别人的意见左右自己内心的声音。<br>最重要的是，勇敢的去追随自己的心灵和直觉，只有自己的心灵和直觉才知道你自己的真实想法，其他一切都是次要。”         ————Steve Jobs                                                  </p>
-</blockquote>
-<h1 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h1><p><code>陈景章</code>/</p>
-<p><code>Web Developer</code>/</p>
-<p><code>1997</code>/</p>
-<h3 id="综合技能"><a href="#综合技能" class="headerlink" title="综合技能"></a>综合技能</h3><table>
-<thead>
-<tr>
-<th>技能</th>
-<th>熟练度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>JAVA</td>
-<td>★★★★★</td>
-</tr>
-<tr>
-<td>Linux</td>
-<td>★★★☆☆</td>
-</tr>
-<tr>
-<td>HTML</td>
-<td>★★☆☆☆</td>
-</tr>
-<tr>
-<td>CSS</td>
-<td>★★★☆☆</td>
-</tr>
-<tr>
-<td>Python</td>
-<td>★☆☆☆☆</td>
-</tr>
-<tr>
-<td>Markdown</td>
-<td>★★★★☆</td>
-</tr>
-<tr>
-<td>Javascript</td>
-<td>★★☆☆☆</td>
-</tr>
-</tbody>
-</table>
-<h3 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h3><p><code>Github</code>：<a href="https://github.com/Roiocam" target="_blank" rel="noopener">https://github.com/Roiocam</a><br><code>Email</code>：<a href="mailto:iRoiocam@gmail.com" target="_blank" rel="noopener">iRoiocam@gmail.com</a></p>
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>哈希算法源于HashTable数据结构，随机分布（良好）的哈希算法能够使每个节点中的元素个数均匀分布。</p>
+<p>当HashTable的节点数变更时，原来的哈系函数结果，可能在会得到新的哈系值，因此，所有原来索引内的元素，就需要变更索引。</p>
+<p>如果你阅读过Java的 HashMap源码，就会了解到HashMap是通过移位来使哈希随机，并且通过2的1次幂的扩容的扩容后，使得哈希新结果只有在最高位上的差异。减少了索引的变更。</p>
+<p>但是在使用Hash算法的另一个场景：使用哈希算法定位缓存服务器。则无法使用该特性，因为缓存服务器的场景一般都是添加1个或n个，或者删除1或n个.2的n次幂扩容在条件上对于缓存服务器来说过于苛刻。<br><a id="more"></a></p>
+<h1 id="一致性哈希算法"><a href="#一致性哈希算法" class="headerlink" title="一致性哈希算法"></a>一致性哈希算法</h1><p>一致性哈希算法也是使用取模的方法，但是不同于普通哈希算法的对索引数量取模，一致性哈希算法对2^32取模。即一致性哈希算法是对存储哈系值的整个内存空间取模。</p>
+<p>若使用int 存储，则哈希的范围为 [0, 2 ^ 32 - 1]. 将 [0, 2 ^ 32 - 1]视为一个圆环。</p>
 
 
-                <!-- 如果开启评论功能 -->
+                <hr>
+
                 
-                    <hr>
 
+                <ul class="pager">
                     
-
+                        <li class="previous">
+                            <a href="/2020/04/26/使用Proxmox搭建Vray渲染机/" data-toggle="tooltip" data-placement="top" title="使用Proxmox搭建Vray渲染机">&larr; Previous Post</a>
+                        </li>
                     
-
-
                     
-
+                        <li class="next">
+                            <a href="/2020/04/16/Bloom-Filter学习/" data-toggle="tooltip" data-placement="top" title="Bloom Filter学习">Next Post &rarr;</a>
+                        </li>
                     
+                </ul>
 
-
+                
 
                 
 
             </div>
+    <!-- Side Catalog Container -->
+        
+
     <!-- Sidebar Container -->
+
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
                 <section>
                     <!-- no hr -->
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
+                       
+                          <a class="tag" href="/tags/#并发" title="并发">并发</a>
                         
-                            
-                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
-                            
+                          <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
                         
-                            
-                        
-                            
-                            <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
-                            
-                        
-                            
-                            <a href="/tags/#编码" title="编码" rel="2">编码</a>
-                            
-                        
-                            
-                            <a href="/tags/#I/O" title="I/O" rel="2">I/O</a>
-                            
-                        
-                            
-                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#JAVA" title="JAVA" rel="9">JAVA</a>
-                            
-                        
-                            
-                            <a href="/tags/#集合" title="集合" rel="3">集合</a>
-                            
-                        
-                            
-                            <a href="/tags/#源码" title="源码" rel="4">源码</a>
-                            
-                        
-                            
-                            <a href="/tags/#算法" title="算法" rel="3">算法</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Linux" title="Linux" rel="3">Linux</a>
-                            
-                        
-                            
-                            <a href="/tags/#记录" title="记录" rel="3">记录</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#探索" title="探索" rel="3">探索</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#分表" title="分表" rel="2">分表</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
+                          <a class="tag" href="/tags/#一致性" title="一致性">一致性</a>
                         
                     </div>
                 </section>
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-
-                        
-                            <img src="/images/avatar.jpg" />
-                        
-
-                        
-                            <p>Knowledge Seeker</p>
-                        
-
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                                <li>
-                                    <a target="_blank" href="https://twitter.com/roiocam">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-                            
-
-                            
-                                <li>
-                                    <a target="_blank" href="http://weibo.com/Roiocam">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-
-                            
-
-                            
-                                <li>
-                                    <a target="_blank"  href="https://github.com/Roiocam">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-                            
-                            
-                            
-                        </ul>
-                    </div>
-                </section>
-                
                 <!-- Friends Blog -->
                 
                 <hr>
@@ -431,9 +244,51 @@
                 </ul>
                 
             </div>
-        
+
+        </div>
     </div>
-</div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->

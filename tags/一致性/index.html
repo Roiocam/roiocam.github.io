@@ -13,11 +13,11 @@
 
     <title>
         
-          涉及分布式及高并发笔记 - Roiocam的博客 | Roiocam&#39;s Blog
+          Roiocam的博客 | Roiocam&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://ilove33.cn/2019/05/29/涉及分布式及高并发笔记/">
+    <link rel="canonical" href="http://ilove33.cn/tags/一致性/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -129,166 +129,7 @@
 
 
     <!-- Main Content -->
-    
-<!-- Image to hack wechat -->
-<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
-
-<!-- Post Header -->
-<style type="text/css">
-    header.intro-header{
-        background-image: url('/images/home-bg.jpg')
-    }
-</style>
-<header class="intro-header" >
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                          <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
-                        
-                          <a class="tag" href="/tags/#高并发" title="高并发">高并发</a>
-                        
-                          <a class="tag" href="/tags/#锁" title="锁">锁</a>
-                        
-                    </div>
-                    <h1>涉及分布式及高并发笔记</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        Posted by Andy Chen on
-                        2019-05-29
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-
-    <!-- Post Container -->
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                <h2 id="分布式系统-集群"><a href="#分布式系统-集群" class="headerlink" title="分布式系统/集群"></a>分布式系统/集群</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>对于分布式系统/集群，主要是一个问题就是需要解决数据一致性、以及分布式系统/集群本身的业务特点，数据备份容灾以及对解决高并发性能。</p>
-<h3 id="特点1-发布与订阅"><a href="#特点1-发布与订阅" class="headerlink" title="特点1.发布与订阅"></a>特点1.发布与订阅</h3><p>涉及到分布式/集群的系统，集群中每个主节点都会有多个备份节点，主节点与备份节点之间的数据同步复制，大部分采用了发布与订阅的模式，如Kafka的Pull和Push，如ZooKeeper的配置中心。</p>
-<p>发布/订阅系统的Push模式一般是主节点推送给备份节点，实时性较Pull模式更高。</p>
-<p>Pull模式则是Client定时轮询，虽然实时上不如Push，但是频率可靠，比较灵活。<br><a id="more"></a></p>
-<h3 id="特点2-心跳检测"><a href="#特点2-心跳检测" class="headerlink" title="特点2:心跳检测"></a>特点2:心跳检测</h3><p>分布式系统/集群由于有多个节点的存在，不同节点之间需要检测彼此是否正常运行，根据复杂度有Ping和TCP长连接来进行心跳检测。心跳检测的运行主要还是为了服务的正常运行，当一个服务中一半以上的节点宕机，则服务一般不会进行Master的选举，如MongoDB中，当节点一半及以上都宕机了时，不会进行新Master的选举，且所有Slave节点备份并停止。</p>
-<h3 id="特点3-分布式锁"><a href="#特点3-分布式锁" class="headerlink" title="特点3.分布式锁"></a>特点3.分布式锁</h3><p>分布式/集群系统在某种意义上类似多线程。他们都同步访问了共享资源。</p>
-<h4 id="1-排他锁"><a href="#1-排他锁" class="headerlink" title="1.排他锁"></a>1.排他锁</h4><p>排他锁又称写锁或独占锁，即当前时间只能有一个节点对共享资源访问，分布式系统需要保证其他节点能够知道现在已经有一个节点对该共享资源访问，保证其他事务都能被通知到。同发布/订阅的需求相似，但是可能实时上更高，在分布式系统的选型时需要根据业务考虑该点。</p>
-<h4 id="2-共享锁"><a href="#2-共享锁" class="headerlink" title="2.共享锁"></a>2.共享锁</h4><p>共享锁又称读锁，如果事务T1对数据对象O1加上了共享锁，那么T1只能对O1进行读操作，其他事务也能同时对O1加共享锁（不能是排他锁），直到O1上的所有共享锁都释放后O1才能被加排他锁。可以多个事务同时获得一个对象的共享锁（同时读），有共享锁就不能再加排他锁（因为排他锁是写锁）</p>
-<h2 id="高并发"><a href="#高并发" class="headerlink" title="高并发"></a>高并发</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>对于并发的业务，首要就是考虑并发的量，每秒多少QPS，每个线程处理的事务需要的时间不同，如果一个事务的处理耗时长，则可以通过开启多个线程，并行去执行任务。并发可以带来时间上性能的满足，但是也引出一个问题，硬件性能无法支持这么打的并发量。导致底层数据库等服务宕机。面对这种情况，既要满足大量的并发， 又要减轻数据库的访问压力。于是有了生产者消费者模型，这是一种将压力平均化，也就是限流，将事务放入队列，一个一个去执行。</p>
-
-
-                <hr>
-
-                
-
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2019/05/29/InnoDB数据隔离级别/" data-toggle="tooltip" data-placement="top" title="InnoDB数据库隔离级别">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                </ul>
-
-                
-
-                
-
-            </div>
-    <!-- Side Catalog Container -->
-        
-
-    <!-- Sidebar Container -->
-
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
-                
-                <section>
-                    <!-- no hr -->
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                       
-                          <a class="tag" href="/tags/#分布式" title="分布式">分布式</a>
-                        
-                          <a class="tag" href="/tags/#高并发" title="高并发">高并发</a>
-                        
-                          <a class="tag" href="/tags/#锁" title="锁">锁</a>
-                        
-                    </div>
-                </section>
-                
-
-                <!-- Friends Blog -->
-                
-                <hr>
-                <h5>FRIENDS</h5>
-                <ul class="list-inline">
-
-                    
-                </ul>
-                
-            </div>
-
-        </div>
-    </div>
-</article>
-
-
-
-
-
-
-
-<!-- async load function -->
-<script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script>
-    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'always',
-          placement: 'right',
-          icon: '#'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-    })
-</script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
-
-
+    <!-- Default Archive layout, we use archives instead. -->
 
     <!-- Footer -->
     <!-- Footer -->

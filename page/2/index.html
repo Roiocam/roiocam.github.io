@@ -166,6 +166,104 @@
 
 <div class="post-preview">
 
+    <a href="/2020/03/06/Spring_生命周期结束源码解析/">
+        <h2 class="post-title">
+            Spring 生命周期结束源码解析
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言在浏览论坛时,看见有人提问，Spring 应用怎样退出。
+在 StackOverFlow 上查询如何退出.得到的结论是:
+1. 编程式退出
+2. 使用 spring-boot-actuators
+之前一直是使用 kill -9 命令退出应该是不正确的做法。
+
+一. Spring 生命周期结束源码解析1. SpringApplication.exit(context,exitCodeGen......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-03-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/03/05/Manjaro-Arch-Linux-网络唤醒全攻略/">
+        <h2 class="post-title">
+            Manjaro/Arch Linux 网络唤醒全攻略
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言笔记本在家放置外接显示屏时，若不使用笔记本屏幕.则笔记本一般都是合盖使用,
+由于笔记本的开机按钮一般都需要开盖（拿出来-&gt;开盖开机-&gt;放进去）的步骤实在过于繁琐,且无外置开机按钮一说。
+突然想到BIOS上右 Wake On Lan的选项，查了下我的网卡支持，于是按照Arch Linux的官方Wiki 上的说明开始设置。
+
+步骤(一). 硬件设定
+在BIOS上启用Wake On......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-03-05
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/09/02/所有开发都应该阅读的初级测试指南/">
+        <h2 class="post-title">
+            初级测试指南
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            单元测试是任何认真的软件开发人员工具箱中必不可少的工具。 但是，有时候为特定的代码编写一个好的单元测试是很困难的。 由于难以测试自己或他人的代码，开发人员通常认为他们的挣扎是由缺乏一些基本的测试知识或神秘单元测试技术引起的。
+在这个单元测试教程中，我将会证明单元测试非常简单：使单元测试复杂化并引入昂贵的复杂性的真正原因是设计不良、不可测试的代码造成的。 我们将讨论使代码难以测试的原因，我们应......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-09-02
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/09/01/持续集成笔记/">
+        <h2 class="post-title">
+            持续集成笔记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            持续集成在软件开发协作中是一个重要阶段。
+持续集成的“典型”流程持续集成（CI）是软件开发周期中的一个阶段，来自不同团队成员或不同功能的代码集成在一起。这通常涉及在短暂的环境中合并代码（集成），构建应用程序和执行基本测试。
+过去，代码集成在软件开发生命周期的“集成阶段”。这个阶段是在不同的团队花费数周，数月甚至数年独立工作，致力于不同（部分）应用程序或服务之后。你可以猜到项目的整合阶段会有多......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-09-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/08/30/构建高性能应用服务器所需要知道的内容/">
         <h2 class="post-title">
             构建高性能应用服务器所需要知道的内容
@@ -321,98 +419,6 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2019/08/23/Quartz任务调度笔记/">
-        <h2 class="post-title">
-            Quartz任务调度笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            强大的开源任务调度框架:Quartz
-体系架构三大核心：调度器，触发器，任务
-1). 任务(Job)a.JobJob接口表示一个任务，要执行的具体内容，此接口只有一个execute方法用于执行任务逻辑。创建任务则必须实现该接口。Job类似Runnable接口1234567public class CleanMySQL implements Job&#123;    @Override    ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-23
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/21/SEDA笔记/">
-        <h2 class="post-title">
-            SEDA笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            简介SEDA是分阶段事件驱动架构的首字母缩写，它将复杂的事件驱动应用程序分解为阶段网络，阶段之间依靠队列连接，应用程序设计者只负责每个阶段的服务逻辑和阶段之间的连接逻辑，而由各个阶段自身负责资源的管理和负载的适应功能。此设计避免了与基于线程的并发模型相关的高开销，并将事件和线程调度与应用逻辑分离，使系统对负载变化的良好适应性以及良好的系统缩放性，达到高并发，高效率。 通过对每个事件队列执行准......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-21
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/08/消息通知服务笔记/">
-        <h2 class="post-title">
-            消息通知业务笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言在负责Ad Exchange竞价成功的消息通知服务时，由于该服务需要消费一定量级的 Kafka 数据，并且保证服务不宕机，友好处理异常，并且异步并发请求的性能需要足够强劲。途中遇到许多之前没有学习的新思路新知识，在此记录
-需求消费 Kafka 中 竞价成功消息通知回调 Topic 中的回调URL，并异步HTTP请求回调。
-Kafka 分区数量 : 30
-
-实现1.分析阶段由需求得知，需要......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-08
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/08/05/使用AOP进行MySQL切表/">
-        <h2 class="post-title">
-            使用AOP进行MySQL切表
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            一. 为什么需要切表在实现这个功能是首先考虑的是，为什么我们需要进行分库分表。
-关系型数据库本身比较容易成为系统的瓶颈（再深入则为关系型数据库的读写一般都为对文件的I/O操作，而硬盘I/O是整个计算机系统中性能比较差的一个部分）。所以当查询维度较多，即使添加了从库，优化了索引，很多操作的性能仍然无法满足需求时，则需要对数据库进行切分。
-数据库分布式核心内容就是数据切分（Sharding），以......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-08-05
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -452,6 +458,12 @@ Kafka 分区数量 : 30
                     <div class="tags">
                         
                             
+                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
+                            
+                        
+                            
+                        
+                            
                             <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
                             
                         
@@ -470,7 +482,7 @@ Kafka 分区数量 : 30
                             
                         
                             
-                            <a href="/tags/#JAVA" title="JAVA" rel="8">JAVA</a>
+                            <a href="/tags/#JAVA" title="JAVA" rel="9">JAVA</a>
                             
                         
                             
@@ -482,15 +494,15 @@ Kafka 分区数量 : 30
                             
                         
                             
-                        
-                            
                             <a href="/tags/#算法" title="算法" rel="3">算法</a>
                             
                         
                             
                         
                             
-                            <a href="/tags/#Linux" title="Linux" rel="2">Linux</a>
+                        
+                            
+                            <a href="/tags/#Linux" title="Linux" rel="3">Linux</a>
                             
                         
                             
@@ -510,15 +522,21 @@ Kafka 分区数量 : 30
                             
                         
                             
-                        
-                            
-                        
-                            
                             <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
                             
                         
                             
+                        
+                            
+                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
+                            
+                        
+                            
+                        
+                            
                             <a href="/tags/#探索" title="探索" rel="3">探索</a>
+                            
+                        
                             
                         
                             
@@ -540,11 +558,9 @@ Kafka 分区数量 : 30
                             
                         
                             
-                        
+                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
                             
                         
-                            
-                            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
                             
                         
                             

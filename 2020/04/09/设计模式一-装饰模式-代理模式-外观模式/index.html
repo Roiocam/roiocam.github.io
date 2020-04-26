@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content>
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          设计模式一:装饰器模式,代理模式,外观模式 - Roiocam的博客 | Roiocam&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://ilove33.cn/2020/04/09/设计模式一-装饰模式-代理模式-外观模式/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="/css/font-noto-serif-sc.css">
+    <link rel="stylesheet" href="/css/font-source-serif-pro.css">
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Roiocam&#39;Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li> 
+                    <li>
+                        <a href="/archives/">Archives</a>
+                    </li>
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                   
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                    <h1>设计模式一:装饰器模式,代理模式,外观模式</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2020-04-09
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>装饰器，代理，外观都属于结构型设计模式，其概念分别如下：</p>
+<ol>
+<li><p>装饰器是一种可以动态地将行为添加到单个对象中，且不会影响对象行为。装饰器模式通常用于遵守“单一职责原则”。</p>
+</li>
+<li><p>代理模式是客户端调用代理对象，来访问背后的真实服务对象，代理对象可以提供额外功能。</p>
+</li>
+<li><p>外观模式是一个对象，其作为一个前置接口屏蔽更复杂的底层逻辑。</p>
+</li>
+</ol>
+<a id="more"></a>
+<h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><h3 id="1-装饰器模式"><a href="#1-装饰器模式" class="headerlink" title="1. 装饰器模式"></a>1. 装饰器模式</h3><p>装饰器模式用于静态扩展某个对象的功能，装饰器是子类的替代方法，子类在编译时增加了行为，并且这些更改影响了原始类的所有实例，而装饰器可以在运行时为所选择对象提供新的行为。</p>
+<p>当有几种的独立的功能扩展时，装饰器模式与子类的差异就尤为重要，因为装饰器是在运行时创建的对象，可以在每次使用的基础上进行组合。</p>
+<p>Java的 I/O流实现包含了装饰器模式。</p>
+<h3 id="2-代理模式"><a href="#2-代理模式" class="headerlink" title="2. 代理模式"></a>2. 代理模式</h3><p>代理模式可以保护和控制背后服务对象，且代理模式可以添加额外的功能，如：检查客户端是否有访问服务对象的权限。</p>
+<h3 id="3-外观模式"><a href="#3-外观模式" class="headerlink" title="3. 外观模式"></a>3. 外观模式</h3><p>外观模式常用于隐藏复杂的实现细节，为客户端提供简单的接口。使复杂系统易于使用。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>我们将以下面的实际案例来说明这几种模式的实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//我们有一个获取商品列表接口及其实现用于获取所有的商品数据.</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IProductService</span></span>&#123;</span><br><span class="line">    <span class="function">List&lt;Product&gt; <span class="title">getProductList</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductServiceImpl</span> <span class="keyword">implements</span> <span class="title">IProductService</span></span>&#123;</span><br><span class="line">    <span class="comment">//商品的数据访问对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ProductDao dao;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">getProductList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dao.findAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//我们有一个获取权限数据的接口及其实现用于检查权限.</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPermissionService</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">checkPermission</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PermissionServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPermissionService</span></span>&#123;</span><br><span class="line">    <span class="comment">//权限的数据访问对象</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> PermissionDao dao;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkPermission</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (dao.getPermission() == <span class="keyword">null</span> || !dao.getPermission.pass())&#123;</span><br><span class="line">            <span class="keyword">throw</span> PermissionDeniedException(<span class="string">"Permission Denied!"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-装饰器模式-1"><a href="#1-装饰器模式-1" class="headerlink" title="1. 装饰器模式"></a>1. 装饰器模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//抽象商品接口实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductServiceDecorator</span> <span class="keyword">implements</span> <span class="title">IProductService</span></span>&#123;</span><br><span class="line">    <span class="comment">//需要被装饰的商品接口</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> IProductService service;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">IProductService</span> <span class="params">(IProductService service)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.service = service;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//将职责委托给实际对象</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">getProductList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> service.getProductList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//添加了权限检查装饰的商品接口实现</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PermissionProdcutService</span> <span class="keyword">extends</span> <span class="title">ProductServiceDecorator</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> IPermissionService permissionService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PermissionProdcutService</span><span class="params">(IProductService service,IPermissionService permissionService)</span></span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(service);</span><br><span class="line">        <span class="keyword">this</span>.permissionService = permissionService;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">getProductList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        checkPermission();</span><br><span class="line">        <span class="keyword">super</span>.getProductList();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//新的行为（检查权限）</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">checkPermission</span><span class="params">()</span></span>&#123;</span><br><span class="line">        permissionService.checkPermission();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        IProductService service = <span class="keyword">new</span> ProductServiceProxy(<span class="keyword">new</span> ProductServiceImpl(),<span class="keyword">new</span> PermissionServiceImpl());</span><br><span class="line">        <span class="comment">//代理模式，代理执行</span></span><br><span class="line">        service.getProductList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-代理模式-1"><a href="#2-代理模式-1" class="headerlink" title="2. 代理模式"></a>2. 代理模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用代理对象来执行获取商品列表</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductServiceProxy</span> <span class="keyword">implements</span> <span class="title">IProductService</span></span>&#123;</span><br><span class="line">    <span class="comment">//实际对象</span></span><br><span class="line">    <span class="keyword">private</span> IProductService service;</span><br><span class="line">    <span class="keyword">private</span> IPermissionService permissionService;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProductServiceProxy</span><span class="params">(IProductService service,IPermissionService permissionService)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.service = service;</span><br><span class="line">        <span class="keyword">this</span>.permissionService = permissionService;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">getProductList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//检查权限</span></span><br><span class="line">        permissionService.checkPermission();</span><br><span class="line">        <span class="comment">//代理执行</span></span><br><span class="line">        <span class="keyword">return</span> service.getProductList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        IProductService service = <span class="keyword">new</span> PermissionProdcutService(<span class="keyword">new</span> ProductServiceImpl(),<span class="keyword">new</span> PermissionServiceImpl());</span><br><span class="line">        <span class="comment">//代理模式，代理执行</span></span><br><span class="line">        service.getProductList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-外观模式-1"><a href="#3-外观模式-1" class="headerlink" title="3. 外观模式"></a>3. 外观模式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPermissionProductService</span></span>&#123;</span><br><span class="line">    <span class="function">List&lt;Product&gt; <span class="title">getProductListByCheck</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PermissionProductServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPermissionProductService</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ProductDao productDao;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> PermissionDao permissionDao;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">getProductListByCheck</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//检查权限</span></span><br><span class="line">        permissionDao.checkPermission();</span><br><span class="line">        <span class="comment">//获取列表</span></span><br><span class="line">        List&lt;Product&gt; list = productDao.getProductList();</span><br><span class="line">        <span class="keyword">if</span> (list == <span class="keyword">null</span> || list.size() = <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;Product&gt;();</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> list;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        IPermissionProductService service = <span class="keyword">new</span> PermissionProductServiceImpl();</span><br><span class="line">        <span class="comment">//外观模式，隐藏细节.</span></span><br><span class="line">        service.getProductListByCheck();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><p>装饰器，适配器，代理模式，外观模式的区别：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>装饰器</td>
+<td>通过包装原始代码为接口动态添加行为</td>
+</tr>
+<tr>
+<td>外观模式</td>
+<td>提供简化的接口</td>
+</tr>
+<tr>
+<td>适配器</td>
+<td>将一个接口转换为另一个接口，使其与客户端的期望匹配</td>
+</tr>
+<tr>
+<td>代理模式</td>
+<td>客户端调用代理对象来执行实际的方法</td>
+</tr>
+</tbody>
+</table>
+<p>从使用上看，三者的调用似乎差别不大。实际上:</p>
+<ol>
+<li>外观模式是新增一个接口，将所有复杂业务耦合在一个接口中，屏蔽复杂业务实现。</li>
+<li>装饰模式中抽象装饰器将功能委托给实际的ProductService执行，而有检查权限的装饰器，是抽象装饰器的子类。</li>
+<li>代理模式中，带权限检查功能的代理对象，将获取商品委托给实际的ProductService,并且代理对象本身自带权限检查功能。</li>
+</ol>
+<p>从UML结构上看：</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/04/13/设计模式二-责任链模式-观察者模式-访问者模式/" data-toggle="tooltip" data-placement="top" title="设计模式二:策略模式,访问者模式,观察者模式">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/04/04/LeetCode-912-Sort-Array/" data-toggle="tooltip" data-placement="top" title="LeetCode.912 Sort Array">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JAVA" title="JAVA">JAVA</a>
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                    <li>
+                        <a target="_blank" href="https://twitter.com/roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Roiocam">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Roiocam&#39;Blog 2020 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://ilove33.cn/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

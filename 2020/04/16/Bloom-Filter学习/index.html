@@ -13,11 +13,11 @@
 
     <title>
         
-          About - Roiocam的博客 | Roiocam&#39;s Blog
+          Bloom Filter学习 - Roiocam的博客 | Roiocam&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://ilove33.cn/about/">
+    <link rel="canonical" href="http://ilove33.cn/2020/04/16/Bloom-Filter学习/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -129,298 +129,117 @@
 
 
     <!-- Main Content -->
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/images/about-bg.jpg')">
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://ilove33.cn/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/images/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>About</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading"> </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#并发" title="并发">并发</a>
+                        
+                          <a class="tag" href="/tags/#概率数据结构" title="概率数据结构">概率数据结构</a>
+                        
+                    </div>
+                    <h1>Bloom Filter学习</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by Andy Chen on
+                        2020-04-16
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        
-
-<!-- USE SIDEBAR -->
     <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-1
-                col-md-8 col-md-offset-1
-                col-sm-12
-                col-xs-12
-                post-container
-            ">
-            
-                <blockquote>
-<p>“你的时间有限，所以不要为别人而活。不要被教条所限，不要活在别人的观念里。不要让别人的意见左右自己内心的声音。<br>最重要的是，勇敢的去追随自己的心灵和直觉，只有自己的心灵和直觉才知道你自己的真实想法，其他一切都是次要。”         ————Steve Jobs                                                  </p>
-</blockquote>
-<h1 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h1><p><code>陈景章</code>/</p>
-<p><code>Web Developer</code>/</p>
-<p><code>1997</code>/</p>
-<h3 id="综合技能"><a href="#综合技能" class="headerlink" title="综合技能"></a>综合技能</h3><table>
-<thead>
-<tr>
-<th>技能</th>
-<th>熟练度</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>JAVA</td>
-<td>★★★★★</td>
-</tr>
-<tr>
-<td>Linux</td>
-<td>★★★☆☆</td>
-</tr>
-<tr>
-<td>HTML</td>
-<td>★★☆☆☆</td>
-</tr>
-<tr>
-<td>CSS</td>
-<td>★★★☆☆</td>
-</tr>
-<tr>
-<td>Python</td>
-<td>★☆☆☆☆</td>
-</tr>
-<tr>
-<td>Markdown</td>
-<td>★★★★☆</td>
-</tr>
-<tr>
-<td>Javascript</td>
-<td>★★☆☆☆</td>
-</tr>
-</tbody>
-</table>
-<h3 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h3><p><code>Github</code>：<a href="https://github.com/Roiocam" target="_blank" rel="noopener">https://github.com/Roiocam</a><br><code>Email</code>：<a href="mailto:iRoiocam@gmail.com" target="_blank" rel="noopener">iRoiocam@gmail.com</a></p>
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>布隆过滤器是空间高效的概率数据结构，用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。</p>
+<p>如果想判断一个元素是不是在一个集合里，一般是将集合中所有元素保存起来，然后通过比较确定。链表、树、哈希表等数据结构都是这种思路。但是随着集合中元素的增加，我们需要的存储空间越来越大。同时检索速度也越来越慢，上述三种结构的检索时间复杂度分别为O(n),O(logn),O(1).</p>
+<p>布隆过滤器的原理是，当一个元素被加入集合时，通过K个散列函数将这个元素映射成一个”位数组”中的K个点，把它们置为1。检索时，如果这些点有任何一个0，则被检元素一定不在；如果都是1，则被检元素很可能存在（存在误报率）。<br><a id="more"></a></p>
+<h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>首先我们了解一下一些布隆过滤器的应用，以此来了解布隆过滤器的作用。</p>
+<ol>
+<li>Akamai Technologies（CDN服务商）使用布隆过滤器防止一次Web请求被缓存在磁盘，使用布隆过滤器筛选，仅在用户第二次以及更多请求后缓存在磁盘。</li>
+<li>Apache HBase以及Apache Cassandra和PostgreSQL 都使用了布隆过滤器来减少对不存在的行/列进行磁盘查找,以防止进行了昂贵的磁盘操作，提高了数据库性能。（类似缓存了一层，但它们本身是持久化存储，面向的对象不同）</li>
+<li>Medium 使用布隆过滤器来避免推荐用户已阅读文章给用户。</li>
+<li>以太坊使用布隆过滤器来快速查找以太坊区块链的日志。</li>
+</ol>
+<h1 id="时间和空间特点"><a href="#时间和空间特点" class="headerlink" title="时间和空间特点"></a>时间和空间特点</h1><p>布隆过滤器由于其不存储元素，所以相比于其他查询效率高的数据结构（如哈希表，简单的数组和链表，自平衡二进制搜索树），空间效率上有很大优势。也是因为这个原因，使用布隆过滤器时，必须为实际存储的元素提供单独的解决方案。</p>
+<p>布隆过滤器有着很好的特殊属性，其插入和查询是否存在所需时间效率是固定常数O(k),完全独立于集合中已存在的元素数量。其他任何“常数空间效率”的集合数据结构都没有该属性。但是稀疏哈希表的平均访问时间实际上比一些布隆过滤器更快。但是，在硬件实现中，Bloom过滤器的亮点在于它的k个查找是独立的，并且可以“并行化”。</p>
+<p>我们将一般的布隆过滤器和K=1的特殊情况布隆过滤器来比较，以深入了解布隆过滤器的空间效率。如果K = 1，则为了将误报率保持在足够低的水平，则只能设置一小部分位，这意味着数组必须非常大且包含很多的零位。（K是Hash函数数量).相比其大小，数组的有效信息含量较低。一般k大于1的布隆过滤器可以设置更多的位，同时仍保持较低的误报率。如果参数（k和m）选择得当，大约一半的位将被设置，并且这些显然是随机的，从而最大程度地减少了冗余并最大化了信息内容。</p>
+<p>#</p>
+<p>布隆过滤器还具有非同寻常的属性，即添加项目或检查项目是否在集合中所需的时间是固定常数O（k），完全独立于集合中已经存在的项目数。没有其他恒定空间集数据结构具有此属性，但是稀疏哈希表的平均访问时间可以使它们在实践中比某些Bloom过滤器更快。但是，在硬件实现中，Bloom过滤器之所以闪亮，是因为其k个查找是独立的并且可以并行化。</p>
+<p>为了了解其空间效率，在k  = 1 时将常规Bloom滤波器与其特殊情况进行比较是有启发性的。如果k = 1，则为了使误报率保持足够低，应设置一小部分比特，这意味着数组必须非常大并且包含长时间的零。相对于其大小，数组的信息含量较低。通用布隆过滤器（k大于1）允许设置更多的位，同时仍保持较低的误报率。如果参数（k和m）选择得当，大约一半的位将被设置，[5] 并且这些显然是随机的，从而最大程度地减少了冗余并最大化了信息内容。</p>
+<h1 id="误报"><a href="#误报" class="headerlink" title="误报"></a>误报</h1>
 
-                <!-- 如果开启评论功能 -->
+                <hr>
+
                 
-                    <hr>
 
+                <ul class="pager">
                     
-
+                        <li class="previous">
+                            <a href="/2020/04/20/一致性哈希算法/" data-toggle="tooltip" data-placement="top" title="一致性哈希算法">&larr; Previous Post</a>
+                        </li>
                     
-
-
                     
-
+                        <li class="next">
+                            <a href="/2020/04/13/设计模式二-责任链模式-观察者模式-访问者模式/" data-toggle="tooltip" data-placement="top" title="设计模式二:策略模式,访问者模式,观察者模式">Next Post &rarr;</a>
+                        </li>
                     
+                </ul>
 
-
+                
 
                 
 
             </div>
+    <!-- Side Catalog Container -->
+        
+
     <!-- Sidebar Container -->
+
             <div class="
-                col-lg-3 col-lg-offset-0
-                col-md-3 col-md-offset-0
-                col-sm-12
-                col-xs-12
-                sidebar-container
-            ">
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
                 <!-- Featured Tags -->
                 
                 <section>
                     <!-- no hr -->
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
+                       
+                          <a class="tag" href="/tags/#并发" title="并发">并发</a>
                         
-                            
-                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
-                            
-                        
-                            
-                            <a href="/tags/#编码" title="编码" rel="2">编码</a>
-                            
-                        
-                            
-                            <a href="/tags/#I/O" title="I/O" rel="2">I/O</a>
-                            
-                        
-                            
-                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#JAVA" title="JAVA" rel="9">JAVA</a>
-                            
-                        
-                            
-                            <a href="/tags/#集合" title="集合" rel="3">集合</a>
-                            
-                        
-                            
-                            <a href="/tags/#源码" title="源码" rel="4">源码</a>
-                            
-                        
-                            
-                            <a href="/tags/#算法" title="算法" rel="3">算法</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Linux" title="Linux" rel="3">Linux</a>
-                            
-                        
-                            
-                            <a href="/tags/#记录" title="记录" rel="3">记录</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#探索" title="探索" rel="3">探索</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#分表" title="分表" rel="2">分表</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
+                          <a class="tag" href="/tags/#概率数据结构" title="概率数据结构">概率数据结构</a>
                         
                     </div>
                 </section>
                 
 
-                <!-- Short About -->
-                <section class="visible-md visible-lg">
-                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
-                    <div class="short-about">
-
-                        
-                            <img src="/images/avatar.jpg" />
-                        
-
-                        
-                            <p>Knowledge Seeker</p>
-                        
-
-                        <!-- SNS Link -->
-                        <ul class="list-inline">
-                            
-                            
-                                <li>
-                                    <a target="_blank" href="https://twitter.com/roiocam">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-                            
-
-                            
-                                <li>
-                                    <a target="_blank" href="http://weibo.com/Roiocam">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-
-                            
-
-                            
-                                <li>
-                                    <a target="_blank"  href="https://github.com/Roiocam">
-                                        <span class="fa-stack fa-lg">
-                                            <i class="fa fa-circle fa-stack-2x"></i>
-                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            
-                            
-                            
-                            
-                        </ul>
-                    </div>
-                </section>
-                
                 <!-- Friends Blog -->
                 
                 <hr>
@@ -431,9 +250,51 @@
                 </ul>
                 
             </div>
-        
+
+        </div>
     </div>
-</div>
+</article>
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
 
 
     <!-- Footer -->

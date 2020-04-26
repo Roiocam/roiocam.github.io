@@ -166,7 +166,114 @@
 
 <div class="post-preview">
 
-    <a href="/2020/04/09/设计模式一-装饰模式/">
+    <a href="/2020/04/26/使用Proxmox搭建Vray渲染机/">
+        <h2 class="post-title">
+            使用Proxmox搭建Vray渲染机
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一. 前言最近朋友创业的工作室因为磁盘空间不足，以及想要搭建一个 CPU 性能更好的服务器用于渲染任务，于是找到了我。
+初步的想法是购买多核性能强劲的 AMD Ryzen 系列. 查阅 Vray Benchmark 的性能如下,发现纯 CPU,组服务器的性能更好，且服务器的内存和硬盘价格都低于家用版，故使用了性价比最高的 E5-2678 V3。
+
+
+
+型号
+价格
+跑分
+分数/每元
+
+
+
+
+R......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-04-26
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/04/20/一致性哈希算法/">
+        <h2 class="post-title">
+            一致性哈希算法
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言哈希算法源于HashTable数据结构，随机分布（良好）的哈希算法能够使每个节点中的元素个数均匀分布。
+当HashTable的节点数变更时，原来的哈系函数结果，可能在会得到新的哈系值，因此，所有原来索引内的元素，就需要变更索引。
+如果你阅读过Java的 HashMap源码，就会了解到HashMap是通过移位来使哈希随机，并且通过2的1次幂的扩容的扩容后，使得哈希新结果只有在最高位上的差异......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-04-20
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/04/16/Bloom-Filter学习/">
+        <h2 class="post-title">
+            Bloom Filter学习
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言布隆过滤器是空间高效的概率数据结构，用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。
+如果想判断一个元素是不是在一个集合里，一般是将集合中所有元素保存起来，然后通过比较确定。链表、树、哈希表等数据结构都是这种思路。但是随着集合中元素的增加，我们需要的存储空间越来越大。同时检索速度也越来越慢，上述三种结构的检索时间复杂度......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-04-16
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/04/13/设计模式二-责任链模式-观察者模式-访问者模式/">
+        <h2 class="post-title">
+            设计模式二:策略模式,访问者模式,观察者模式
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言策略模式,访问者模式,观察者模式都属于行为型设计模式，其概念分别如下：
+
+策略模式使算法独立于使用该算法的客户端，可以在运行时选择算法。
+访问者模式适用于双重调度的场景。
+观察者模式是一种用于主题变更时通知多个观察者的设计模式。
+
+
+作用1. 策略模式策略模式将算法选定推迟到运行时决定，使得调用代码更灵活。例如使用传入数据验证的类可以使用策略模式选择验证算法，具体取决于数据的类型来源;电......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-04-13
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/04/09/设计模式一-装饰模式-代理模式-外观模式/">
         <h2 class="post-title">
             设计模式一:装饰器模式,代理模式,外观模式
         </h2>
@@ -174,7 +281,8 @@
             
         </h3>
         <div class="post-content-preview">
-            前言
+            前言装饰器，代理，外观都属于结构型设计模式，其概念分别如下：
+
 装饰器是一种可以动态地将行为添加到单个对象中，且不会影响对象行为。装饰器模式通常用于遵守“单一职责原则”。
 
 代理模式是客户端调用代理对象，来访问背后的真实服务对象，代理对象可以提供额外功能。
@@ -183,7 +291,7 @@
 
 
 
-作用1. 装饰器模式装饰器模式用于静态扩展某个对象的功能，装饰器是子类的替代方法，子类在编译时增加了行为，并且这些更改影响了......
+作用1. 装饰器模式装饰器模式用于静态扩展某个对象的功能，装饰器是......
         </div>
     </a>
     <p class="post-meta">
@@ -333,104 +441,6 @@ gradl......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2020/03/06/Spring_生命周期结束源码解析/">
-        <h2 class="post-title">
-            Spring 生命周期结束源码解析
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言在浏览论坛时,看见有人提问，Spring 应用怎样退出。
-在 StackOverFlow 上查询如何退出.得到的结论是:
-1. 编程式退出
-2. 使用 spring-boot-actuators
-之前一直是使用 kill -9 命令退出应该是不正确的做法。
-
-一. Spring 生命周期结束源码解析1. SpringApplication.exit(context,exitCodeGen......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2020-03-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2020/03/05/Manjaro-Arch-Linux-网络唤醒全攻略/">
-        <h2 class="post-title">
-            Manjaro/Arch Linux 网络唤醒全攻略
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言笔记本在家放置外接显示屏时，若不使用笔记本屏幕.则笔记本一般都是合盖使用,
-由于笔记本的开机按钮一般都需要开盖（拿出来-&gt;开盖开机-&gt;放进去）的步骤实在过于繁琐,且无外置开机按钮一说。
-突然想到BIOS上右 Wake On Lan的选项，查了下我的网卡支持，于是按照Arch Linux的官方Wiki 上的说明开始设置。
-
-步骤(一). 硬件设定
-在BIOS上启用Wake On......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2020-03-05
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/09/02/所有开发都应该阅读的初级测试指南/">
-        <h2 class="post-title">
-            初级测试指南
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            单元测试是任何认真的软件开发人员工具箱中必不可少的工具。 但是，有时候为特定的代码编写一个好的单元测试是很困难的。 由于难以测试自己或他人的代码，开发人员通常认为他们的挣扎是由缺乏一些基本的测试知识或神秘单元测试技术引起的。
-在这个单元测试教程中，我将会证明单元测试非常简单：使单元测试复杂化并引入昂贵的复杂性的真正原因是设计不良、不可测试的代码造成的。 我们将讨论使代码难以测试的原因，我们应......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-09-02
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2019/09/01/持续集成笔记/">
-        <h2 class="post-title">
-            持续集成笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            持续集成在软件开发协作中是一个重要阶段。
-持续集成的“典型”流程持续集成（CI）是软件开发周期中的一个阶段，来自不同团队成员或不同功能的代码集成在一起。这通常涉及在短暂的环境中合并代码（集成），构建应用程序和执行基本测试。
-过去，代码集成在软件开发生命周期的“集成阶段”。这个阶段是在不同的团队花费数周，数月甚至数年独立工作，致力于不同（部分）应用程序或服务之后。你可以猜到项目的整合阶段会有多......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2019-09-01
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -466,6 +476,12 @@ gradl......
                     <div class="tags">
                         
                             
+                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
+                            
+                        
+                            
+                        
+                            
                             <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
                             
                         
@@ -484,7 +500,7 @@ gradl......
                             
                         
                             
-                            <a href="/tags/#JAVA" title="JAVA" rel="8">JAVA</a>
+                            <a href="/tags/#JAVA" title="JAVA" rel="9">JAVA</a>
                             
                         
                             
@@ -496,15 +512,15 @@ gradl......
                             
                         
                             
-                        
-                            
                             <a href="/tags/#算法" title="算法" rel="3">算法</a>
                             
                         
                             
                         
                             
-                            <a href="/tags/#Linux" title="Linux" rel="2">Linux</a>
+                        
+                            
+                            <a href="/tags/#Linux" title="Linux" rel="3">Linux</a>
                             
                         
                             
@@ -524,15 +540,21 @@ gradl......
                             
                         
                             
-                        
-                            
-                        
-                            
                             <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
                             
                         
                             
+                        
+                            
+                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
+                            
+                        
+                            
+                        
+                            
                             <a href="/tags/#探索" title="探索" rel="3">探索</a>
+                            
+                        
                             
                         
                             
@@ -554,11 +576,9 @@ gradl......
                             
                         
                             
-                        
+                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
                             
                         
-                            
-                            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
                             
                         
                             

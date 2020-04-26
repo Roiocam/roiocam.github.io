@@ -166,6 +166,78 @@
 
 <div class="post-preview">
 
+    <a href="/2019/06/25/记录一次JPA动态修改数据库的探索历程/">
+        <h2 class="post-title">
+            记录一次JPA动态修改数据库的探索历程
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            缘由在重构项目时，因系统大量使用了分表逻辑，对每个不同的数据使用了不同的数据库，且新项目都为MyBatis框架，对SQL的操作更加容易。故探索了JPA的实现方案。
+过程1. 分离切库和存储线程变量由于原业务，切库和存储线程的变量的信息耦合在一起，存储时在业务层，切库时却在DAO层。
+存储分离：使用AOP切入Service层，在Controller调用Service层方法时，也就是服务接受了用......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-25
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/06/25/MongoDB的副本集群和分片集群/">
+        <h2 class="post-title">
+            MongoDB的副本集群和分片集群
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            简介：在 MySQL ，我们对数据进行备份时的通用做法是主从复制，但是主从复制的本质还是一个单福本应用。在 MongoDB 中，推荐建立副本集保证服务的容错性。
+一、副本集概念副本集在多台机器同步数据，提供了数据冗余，扩展了数据可用性。避免服务在故障时导致丢失数据。除此之外在一些场景还有扩展读性能的作用。
+副本集和主从同步相似，主MongoDB实例接受所有的写操作， 其他实例接受主 Mong......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-06-25
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/05/29/InnoDB数据隔离级别/">
+        <h2 class="post-title">
+            InnoDB数据库隔离级别
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一次封锁在大量并发访问的应用里，为了防止死锁，一般推荐使用一次封锁法：在方法的开始阶段，已经预先知道会用到哪些数据，全部锁住，在运行之后全部解锁。
+这种方法可以有效避免循环死锁。却不适用于数据库中。
+因为在事务开始阶段，数据库并不知道会用到哪些数据。
+二段锁数据库遵循的是二段锁协议，将事务分为两个阶段，加锁和解锁阶段。
+
+加锁阶段：在该阶段可以进行加锁操作，在对任何数据进行读操作之前要申请获......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-05-29
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2019/05/29/涉及分布式及高并发笔记/">
         <h2 class="post-title">
             涉及分布式及高并发笔记
@@ -222,6 +294,12 @@
                     <div class="tags">
                         
                             
+                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
+                            
+                        
+                            
+                        
+                            
                             <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
                             
                         
@@ -240,7 +318,7 @@
                             
                         
                             
-                            <a href="/tags/#JAVA" title="JAVA" rel="8">JAVA</a>
+                            <a href="/tags/#JAVA" title="JAVA" rel="9">JAVA</a>
                             
                         
                             
@@ -252,23 +330,19 @@
                             
                         
                             
-                        
-                            
                             <a href="/tags/#算法" title="算法" rel="3">算法</a>
                             
                         
                             
                         
                             
-                            <a href="/tags/#Linux" title="Linux" rel="2">Linux</a>
+                        
+                            
+                            <a href="/tags/#Linux" title="Linux" rel="3">Linux</a>
                             
                         
                             
                             <a href="/tags/#记录" title="记录" rel="3">记录</a>
-                            
-                        
-                            
-                        
                             
                         
                             
@@ -290,9 +364,19 @@
                             
                         
                             
+                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
+                            
+                        
+                            
                         
                             
                             <a href="/tags/#探索" title="探索" rel="3">探索</a>
+                            
+                        
+                            
+                        
+                            
+                        
                             
                         
                             
@@ -310,11 +394,9 @@
                             
                         
                             
-                        
+                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
                             
                         
-                            
-                            <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
                             
                         
                             
