@@ -166,59 +166,6 @@
 
 <div class="post-preview">
 
-    <a href="/2020/03/06/Spring_生命周期结束源码解析/">
-        <h2 class="post-title">
-            Spring 生命周期结束源码解析
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言在浏览论坛时,看见有人提问，Spring 应用怎样退出。
-在 StackOverFlow 上查询如何退出.得到的结论是:
-1. 编程式退出
-2. 使用 spring-boot-actuators
-之前一直是使用 kill -9 命令退出应该是不正确的做法。
-
-一. Spring 生命周期结束源码解析1. SpringApplication.exit(context,exitCodeGen......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2020-03-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2020/03/05/Manjaro-Arch-Linux-网络唤醒全攻略/">
-        <h2 class="post-title">
-            Manjaro/Arch Linux 网络唤醒全攻略
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言笔记本在家放置外接显示屏时，若不使用笔记本屏幕.则笔记本一般都是合盖使用,
-由于笔记本的开机按钮一般都需要开盖（拿出来-&gt;开盖开机-&gt;放进去）的步骤实在过于繁琐,且无外置开机按钮一说。
-突然想到BIOS上右 Wake On Lan的选项，查了下我的网卡支持，于是按照Arch Linux的官方Wiki 上的说明开始设置。
-
-步骤(一). 硬件设定
-在BIOS上启用Wake On......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2020-03-05
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2019/09/02/所有开发都应该阅读的初级测试指南/">
         <h2 class="post-title">
             初级测试指南
@@ -419,6 +366,50 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
 </div>
 <hr>
 
+<div class="post-preview">
+
+    <a href="/2019/08/23/Quartz任务调度笔记/">
+        <h2 class="post-title">
+            Quartz任务调度笔记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            强大的开源任务调度框架:Quartz
+体系架构三大核心：调度器，触发器，任务
+1). 任务(Job)a.JobJob接口表示一个任务，要执行的具体内容，此接口只有一个execute方法用于执行任务逻辑。创建任务则必须实现该接口。Job类似Runnable接口1234567public class CleanMySQL implements Job&#123;    @Override    ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-08-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2019/08/21/SEDA笔记/">
+        <h2 class="post-title">
+            SEDA笔记
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            简介SEDA是分阶段事件驱动架构的首字母缩写，它将复杂的事件驱动应用程序分解为阶段网络，阶段之间依靠队列连接，应用程序设计者只负责每个阶段的服务逻辑和阶段之间的连接逻辑，而由各个阶段自身负责资源的管理和负载的适应功能。此设计避免了与基于线程的并发模型相关的高开销，并将事件和线程调度与应用逻辑分离，使系统对负载变化的良好适应性以及良好的系统缩放性，达到高并发，高效率。 通过对每个事件队列执行准......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2019-08-21
+    </p>
+
+</div>
+<hr>
+
 
 
 <!-- Pager -->
@@ -458,12 +449,6 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
                     <div class="tags">
                         
                             
-                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
-                            
-                        
-                            
-                        
-                            
                             <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
                             
                         
@@ -473,12 +458,6 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
                         
                             
                             <a href="/tags/#I/O" title="I/O" rel="2">I/O</a>
-                            
-                        
-                            
-                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
-                            
-                        
                             
                         
                             
@@ -494,9 +473,15 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
                             
                         
                             
-                            <a href="/tags/#算法" title="算法" rel="3">算法</a>
+                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
                             
                         
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#算法" title="算法" rel="3">算法</a>
                             
                         
                             
@@ -522,21 +507,15 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
                             
                         
                             
+                        
+                            
                             <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
                             
                         
                             
                         
                             
-                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
-                            
-                        
-                            
-                        
-                            
                             <a href="/tags/#探索" title="探索" rel="3">探索</a>
-                            
-                        
                             
                         
                             
@@ -556,9 +535,13 @@ UNIX提供的标准I/O（设计用来终端或者文件执行I/O操作）
                             
                         
                             
+                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
+                            
                         
                             
-                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
+                        
+                            
+                        
                             
                         
                             

@@ -200,51 +200,6 @@ R......
 
 <div class="post-preview">
 
-    <a href="/2020/04/20/一致性哈希算法/">
-        <h2 class="post-title">
-            一致性哈希算法
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言哈希算法源于HashTable数据结构，随机分布（良好）的哈希算法能够使每个节点中的元素个数均匀分布。
-当HashTable的节点数变更时，原来的哈系函数结果，可能在会得到新的哈系值，因此，所有原来索引内的元素，就需要变更索引。
-如果你阅读过Java的 HashMap源码，就会了解到HashMap是通过移位来使哈希随机，并且通过2的1次幂的扩容的扩容后，使得哈希新结果只有在最高位上的差异......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2020-04-20
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2020/04/16/Bloom-Filter学习/">
-        <h2 class="post-title">
-            Bloom Filter学习
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前言布隆过滤器是空间高效的概率数据结构，用于检索一个元素是否在一个集合中。它的优点是空间效率和查询时间都远远超过一般的算法，缺点是有一定的误识别率和删除困难。
-如果想判断一个元素是不是在一个集合里，一般是将集合中所有元素保存起来，然后通过比较确定。链表、树、哈希表等数据结构都是这种思路。但是随着集合中元素的增加，我们需要的存储空间越来越大。同时检索速度也越来越慢，上述三种结构的检索时间复杂度......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Andy Chen on
-        2020-04-16
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2020/04/13/设计模式二-责任链模式-观察者模式-访问者模式/">
         <h2 class="post-title">
             设计模式二:策略模式,访问者模式,观察者模式
@@ -441,6 +396,59 @@ gradl......
 </div>
 <hr>
 
+<div class="post-preview">
+
+    <a href="/2020/03/06/Spring_生命周期结束源码解析/">
+        <h2 class="post-title">
+            Spring 生命周期结束源码解析
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言在浏览论坛时,看见有人提问，Spring 应用怎样退出。
+在 StackOverFlow 上查询如何退出.得到的结论是:
+1. 编程式退出
+2. 使用 spring-boot-actuators
+之前一直是使用 kill -9 命令退出应该是不正确的做法。
+
+一. Spring 生命周期结束源码解析1. SpringApplication.exit(context,exitCodeGen......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-03-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/03/05/Manjaro-Arch-Linux-网络唤醒全攻略/">
+        <h2 class="post-title">
+            Manjaro/Arch Linux 网络唤醒全攻略
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前言笔记本在家放置外接显示屏时，若不使用笔记本屏幕.则笔记本一般都是合盖使用,
+由于笔记本的开机按钮一般都需要开盖（拿出来-&gt;开盖开机-&gt;放进去）的步骤实在过于繁琐,且无外置开机按钮一说。
+突然想到BIOS上右 Wake On Lan的选项，查了下我的网卡支持，于是按照Arch Linux的官方Wiki 上的说明开始设置。
+
+步骤(一). 硬件设定
+在BIOS上启用Wake On......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Andy Chen on
+        2020-03-05
+    </p>
+
+</div>
+<hr>
+
 
 
 <!-- Pager -->
@@ -476,12 +484,6 @@ gradl......
                     <div class="tags">
                         
                             
-                            <a href="/tags/#并发" title="并发" rel="3">并发</a>
-                            
-                        
-                            
-                        
-                            
                             <a href="/tags/#深入理解操作系统" title="深入理解操作系统" rel="3">深入理解操作系统</a>
                             
                         
@@ -491,12 +493,6 @@ gradl......
                         
                             
                             <a href="/tags/#I/O" title="I/O" rel="2">I/O</a>
-                            
-                        
-                            
-                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
-                            
-                        
                             
                         
                             
@@ -512,9 +508,15 @@ gradl......
                             
                         
                             
-                            <a href="/tags/#算法" title="算法" rel="3">算法</a>
+                            <a href="/tags/#数据库" title="数据库" rel="4">数据库</a>
                             
                         
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#算法" title="算法" rel="3">算法</a>
                             
                         
                             
@@ -540,21 +542,15 @@ gradl......
                             
                         
                             
+                        
+                            
                             <a href="/tags/#Spring" title="Spring" rel="2">Spring</a>
                             
                         
                             
                         
                             
-                            <a href="/tags/#分布式" title="分布式" rel="2">分布式</a>
-                            
-                        
-                            
-                        
-                            
                             <a href="/tags/#探索" title="探索" rel="3">探索</a>
-                            
-                        
                             
                         
                             
@@ -574,9 +570,13 @@ gradl......
                             
                         
                             
+                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
+                            
                         
                             
-                            <a href="/tags/#设计模式" title="设计模式" rel="3">设计模式</a>
+                        
+                            
+                        
                             
                         
                             

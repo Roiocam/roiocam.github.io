@@ -434,7 +434,44 @@
 <h3 id="2-新建LVM"><a href="#2-新建LVM" class="headerlink" title="2. 新建LVM"></a>2. 新建LVM</h3><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 首先查看硬盘可用大小 </span></span><br><span class="line">vgdisplay pve <span class="string">|grep Free</span></span><br></pre></td></tr></table></figure>
 <p>Free PE / Size <code>43705</code> / 56.12 GiB</p>
 <figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># 其次将剩余空间用于建立LVM. </span></span><br><span class="line"><span class="title">lvcreate</span> -l <span class="number">43705</span> -n <span class="class"><span class="keyword">data</span> pve</span></span><br><span class="line"><span class="meta"># 格式化新的LVM</span></span><br><span class="line"><span class="title">mkfs</span>.ext4 /dev/pve/<span class="class"><span class="keyword">data</span></span></span><br><span class="line"><span class="meta"># 新建文件夹并将LVM挂载</span></span><br><span class="line"><span class="title">mkdir</span> /mnt/<span class="class"><span class="keyword">data</span></span></span><br><span class="line"><span class="title">mount</span> /dev/pve/<span class="class"><span class="keyword">data</span> /mnt/<span class="keyword">data</span></span></span><br><span class="line"><span class="meta"># 最后修改/etc/fstab的配置，添加以下</span></span><br><span class="line">/dev/pve/<span class="class"><span class="keyword">data</span> /var/lib/vz/ ext4 defaults 0 0</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-在Proxmox网页控制台中新建存储-目录-其中目录为-mnt-data"><a href="#3-在Proxmox网页控制台中新建存储-目录-其中目录为-mnt-data" class="headerlink" title="3. 在Proxmox网页控制台中新建存储-目录,其中目录为/mnt/data"></a>3. 在Proxmox网页控制台中新建存储-目录,其中目录为/mnt/data</h3><h1 id="九-Deadline-渲染客户端配置"><a href="#九-Deadline-渲染客户端配置" class="headerlink" title="九. Deadline 渲染客户端配置"></a>九. Deadline 渲染客户端配置</h1>
+<h3 id="3-在Proxmox网页控制台中新建存储-目录-其中目录为-mnt-data"><a href="#3-在Proxmox网页控制台中新建存储-目录-其中目录为-mnt-data" class="headerlink" title="3. 在Proxmox网页控制台中新建存储-目录,其中目录为/mnt/data"></a>3. 在Proxmox网页控制台中新建存储-目录,其中目录为/mnt/data</h3><h1 id="九-Deadline-渲染农场-非专业"><a href="#九-Deadline-渲染农场-非专业" class="headerlink" title="九. Deadline 渲染农场 (非专业)"></a>九. Deadline 渲染农场 (非专业)</h1><p>Deadline 渲染农场的包含:</p>
+<ol>
+<li>渲染节点 Deadline Client</li>
+<li>用于存储管理任务和脚本的仓库 Deadline Repository</li>
+<li>用于存储任务信息的数据库 MongoDB</li>
+</ol>
+<h3 id="1-安装-Repository-和-Database"><a href="#1-安装-Repository-和-Database" class="headerlink" title="1. 安装 Repository 和 Database"></a>1. 安装 Repository 和 Database</h3><p>MongoDB的安装方式有两种,一是通过安装Repository时安装，二是先于Repository安装,在安装 Repository时指定MongoDB连接配置</p>
+<p>由于我本地已经有MongoDB，故我采用第二种方法.</p>
+<p>首先在<a href="https://downloads.thinkboxsoftware.com/" target="_blank" rel="noopener">Thinkbox官网</a>上下载Repository，我这边选择将Repository安装在Proxmox系统上。一是因为Linux更加稳定，二是服务端无需破解。</p>
+<p>文件下载后,直接执行<code>sudo ./DeadlineRepository-1.1.5.1-linux-x64-installer.run</code></p>
+<p>执行后首先是License的条款，需要你阅读并同意，使用 <code>Enter</code>回车键翻页,并最后输入 <code>y</code>同意条款.</p>
+<p>之后便是选择安装目录，这里我们需要选择Samba共享的仓库地址.即<code>/mnt/share/public</code></p>
+<p>目录之后则是权限，我们选择Full Access,即输入 <code>y</code> 确定</p>
+<p>这是提示我们是否安装MongoDB.我们选择<code>[2]</code></p>
+<p>之后则是MongoDB的设置</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Hostname : MongoDB的主机ip</span><br><span class="line">port     : MongoDB的端口</span><br><span class="line">DatabaseName : 数据库名，集合名，这里我们需要新建一个集合供Deadline使用</span><br><span class="line">是否使用SSL/TLC ：我这里选择了不使用</span><br></pre></td></tr></table></figure>
+<p>完成设置后，Repository安装程序则会尝试链接至MongoDB,若成功,则安装程序基本上结束.</p>
+<p><strong>需要注意的是，Repository的安装路径必须为共享目录,供渲染客户但连接</strong></p>
+<h3 id="2-安装-Deadline-Client"><a href="#2-安装-Deadline-Client" class="headerlink" title="2. 安装 Deadline Client"></a>2. 安装 Deadline Client</h3><p>该程序需要安装在每一个机器，其功能有:渲染任务监听，渲染任务发布，渲染任务领取。</p>
+<p>由于我的服务器是用于3DSMAX的VRAY，故我的客户端安装在Windows下，其安装比较简单，在过程中选择 Repository 路径为共享目录中 Repository的安装路径 <code>/mnt/share/public</code>，之后一路确认即可。</p>
+<p>客户端安装完成并打开，我们需要为3DMAX安装提交脚本，打开Monitor监听器，在Tools-&gt; Download Submission Script 中选中3dsmax下载3dsmax的任务发布安装程序.</p>
+<p>下载完成后有安装程序和脚本两种,</p>
+<ol>
+<li>将脚本拷贝至<code>3dsMax安装路径/MaxScrpit</code>和<code>3dsMax安装路径/startup/script</code>路径下</li>
+<li>执行安装程序安装</li>
+</ol>
+<p><strong>注意</strong> Deadline Slave程序是渲染机才打开的程序,非渲染机只需打开Monitor查看任务即可.</p>
+<h3 id="3-渲染机安装-3dsMax-和-Vray"><a href="#3-渲染机安装-3dsMax-和-Vray" class="headerlink" title="3. 渲染机安装 3dsMax 和 Vray"></a>3. 渲染机安装 3dsMax 和 Vray</h3><p>由于Deadline的渲染任务领取是通过脚本来启动3dsMax执行渲染，故仍需安装 3dsMax程序.</p>
+<p>注意，3dsMax版本推荐选择英文版,方便Deadline启动3dsMax。</p>
+<p>若在执行任务时，发现Deadline找不到 3dsmax，则需要在Monitor中 Tools - SuperMode -&gt; 之后再  Tools - Configure 3dsMax …来重新选择3dsmax.exe路径..</p>
+<p>至此,基于Proxmox的多虚拟机系统和Deadline渲染农场安装完毕.</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>关于软件和系统的选择。</p>
+<p>在渲染农场软件上，我们并无过多选择，除了AutoDesk的BackBuner之外，只有ThinkBox的Deadline. </p>
+<p>为什么选择Proxmox，其实Deadline农场并不需要Proxmox,且即使是KVM也会略微降低性能，也可以为服务器安装Windows时，并通过共享来解决文件共享，以及Repository安装。</p>
+<p>选择Proxmox，一方面是因为Proxmox这类虚拟机系统包含了集群方案，不同与ESXi的收费，和不支持集群的虚拟机。</p>
+<p>故综合之下选择了Proxmox作为控制台，后续需要再添加一台 1U服务器来提高性能时，使用Proxmox也便于管理，且Proxmox原生支持存储池以及ZFS文件系统，对后续的扩展带来便利…</p>
+<p>最后此章只是在初期时的一些思路,为后续的水平扩展留下便利.希望读者能体会其中思想.</p>
+
 
                 <hr>
 
@@ -444,7 +481,7 @@
                     
                     
                         <li class="next">
-                            <a href="/2020/04/20/一致性哈希算法/" data-toggle="tooltip" data-placement="top" title="一致性哈希算法">Next Post &rarr;</a>
+                            <a href="/2020/04/13/设计模式二-责任链模式-观察者模式-访问者模式/" data-toggle="tooltip" data-placement="top" title="设计模式二:策略模式,访问者模式,观察者模式">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
